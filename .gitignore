@@ -1,3 +1,14 @@
 __pycache__/
 *.pyc
 .env
+Backend/env/
+Backend/venv/
+
+frontend/node_modules/
+dist/
+build/
+.env.local
+.eslintcache
+
+.vscode/
+Thumbs.db

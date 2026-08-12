@@ -7,6 +7,8 @@ import {
 import Barra from "./Componentes/Barra";
 
 import Dashboard from "./pages/Dashboard";
+import Compartidas from "./pages/Compartidas";
+import Notificaciones from "./pages/Notificaciones";
 
 
 function Placeholder({ title }) {
@@ -70,16 +72,12 @@ function App() {
 
                         <Route
                             path="/compartidas"
-                            element={
-                                <Placeholder title="Reseñas compartidas" />
-                            }
+                            element={<Compartidas />}
                         />
 
                         <Route
                             path="/notificaciones"
-                            element={
-                                <Placeholder title="Notificaciones" />
-                            }
+                            element={<Notificaciones />}
                         />
 
                         <Route

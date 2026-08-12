@@ -1,10 +1,11 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
-
+from routes.routes import resenas_bp
 
 app = Flask(__name__)
 
 CORS(app)
+app.register_blueprint(resenas_bp)
 
 
 @app.route("/", methods=["GET"])

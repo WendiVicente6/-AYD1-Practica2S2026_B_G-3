@@ -100,3 +100,26 @@ def modificar_resena(cod_resena):
     finally:
         cursor.close()
         conn.close()
+
+
+@resenas_bp.route("/api/resenas/<int:cod_resena>", methods=["DELETE"])
+def eliminar_resena(cod_resena):
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT cod_resena FROM tresenia WHERE cod_resena=%s", (cod_resena,))
+        if cursor.fetchone() is None:
+            return jsonify({"error": "Reseña no encontrada"}), 404
+
+        cursor.execute("DELETE FROM tresenia_etiqueta WHERE cod_resenia=%s", (cod_resena,))
+        cursor.execute("DELETE FROM tcompartida WHERE cod_resenia=%s", (cod_resena,))
+        cursor.execute("DELETE FROM tresenia WHERE cod_resena=%s", (cod_resena,))
+
+        conn.commit()
+        return jsonify({"message": "Reseña eliminada"}), 200
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        conn.close()

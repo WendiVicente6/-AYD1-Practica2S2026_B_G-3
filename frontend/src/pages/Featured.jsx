@@ -1,21 +1,69 @@
-import React from "react";
-
+import React, { useEffect, useRef, useState } from "react";
+import { obtenerResenias } from "../api/destacar.js";
 
 export default function Featured() {
 
+    const [resenia, setResenia] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+    const fetchingRef = useRef(false);
 
-    const usuariosPrueba = [
-        { id: 1, titulo: "Reseña 1", calificacion: 5, comentario: "Excelente producto", genero: "Acción" },
-        { id: 2, titulo: "Reseña 2", calificacion: 4, comentario: "Buen producto", genero: "Aventura" },
-        { id: 3, titulo: "Reseña 3", calificacion: 3, comentario: "Producto regular", genero: "RPG" },
-    ];
+    const cargarResenias = async (showLoader = false) => {
+        if (fetchingRef.current) return;
+        fetchingRef.current = true;
+
+        try {
+            if (showLoader) setLoading(true);
+            const resenias = await obtenerResenias();
+            setResenia(resenias);
+            setError("");
+        } catch (error) {
+            setError("Error al cargar las reseñas");
+        } finally {
+            if (showLoader) setLoading(false);
+            fetchingRef.current = false;
+        }
+    };
+
+    const handleToggleDestacada = (codResena, checked) => {
+        setResenia((prev) =>
+            prev.map((item) =>
+                item.cod_resena === codResena
+                    ? { ...item, destacada: checked ? "S" : "N" }
+                    : item
+            )
+        );
+    };
+
+    useEffect(() => {
+        cargarResenias(true);
+
+        const intervalId = setInterval(() => {
+            if (document.visibilityState === "visible") {
+                cargarResenias(false);
+            }
+        }, 30000);
+
+        const onVisible = () => {
+            if (document.visibilityState === "visible") {
+                cargarResenias(false);
+            }
+        };
+
+        document.addEventListener("visibilitychange", onVisible);
+
+        return () => {
+            clearInterval(intervalId);
+            document.removeEventListener("visibilitychange", onVisible);
+        };
+    }, []);
+
+    if (loading) return <div className="w-full min-h-screen flex items-center justify-center">Cargando...</div>;
+    if (error) return <div className="w-full min-h-screen flex items-center justify-center text-red-500">{error}</div>;
+
 
     return (
-        <div
-            className="w-full min-h-screen bg-gray-50 p-6 md:p-8"
-            id="featured-container"
-        >
-
+        <div className="w-full min-h-screen bg-gray-50 p-6 md:p-8" id="featured-container">
             {/* ENCABEZADO */}
             <div
                 className="mb-8 w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm"
@@ -29,7 +77,6 @@ export default function Featured() {
                     Marque o desmarque las reseñas para destacarlas.
                 </p>
             </div>
-
 
             {/* TABLA */}
             <div
@@ -49,7 +96,6 @@ export default function Featured() {
                             <th className="px-8 py-5 text-center font-semibold">Título</th>
                             <th className="px-8 py-5 text-center font-semibold">Calificación</th>
                             <th className="px-8 py-5 text-center font-semibold">Comentario/Opinión</th>
-                            <th className="px-8 py-5 text-center font-semibold">Género</th>
                             <th className="px-8 py-5 text-center font-semibold">Destacar</th>
                         </tr>
                     </thead>
@@ -58,40 +104,38 @@ export default function Featured() {
                     {/* CUERPO TABLA*/}
                     <tbody className="divide-y divide-gray-200 bg-white">
 
-                        {usuariosPrueba.map((usuario) => (
+                        {resenia.map((r) => (
 
                             <tr
-                                key={usuario.id}
+                                key={r.cod_resena}
                                 className="transition-colors hover:bg-gray-50"
                             >
                                 <td className="px-8 py-6 text-center font-medium text-gray-900">
-                                    {usuario.id}
+                                    {r.cod_resena}
                                 </td>
 
                                 <td className="px-8 py-6 text-center text-gray-900">
-                                    {usuario.titulo}
+                                    {r.titulo_pelicula}
                                 </td>
 
                                 <td className="px-8 py-6 text-center">
                                     <span className="font-bold text-amber-600">
-                                        {usuario.calificacion}
+                                        {r.calificacion}
                                     </span>
                                 </td>
 
                                 <td className="px-8 py-6 text-center text-gray-600">
-                                    {usuario.comentario}
-                                </td>
-
-                                <td className="px-8 py-6 text-center">
-                                    <span className="inline-flex items-center justify-center rounded-full bg-blue-100 px-4 py-1 text-sm font-medium text-blue-700">
-                                        {usuario.genero}
-                                    </span>
+                                    {r.comentario}
                                 </td>
 
                                 <td className="px-8 py-6 text-center">
                                     <div className="flex justify-center">
                                         <input
                                             type="checkbox"
+                                            checked={(r.destacada || "").toUpperCase() === "S"}
+                                            onChange={(e) =>
+                                                handleToggleDestacada(r.cod_resena, e.target.checked)
+                                            }
                                             className="h-5 w-5 cursor-pointer rounded border-gray-300 text-green-600 focus:ring-green-500"
                                         />
                                     </div>

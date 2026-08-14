@@ -332,7 +332,7 @@ def obtener_resenas_del_usuario(cod_usuario):
                 r.comentario,
                 r.destacada
             FROM tresenia r
-            WHERE r.cod_usuario = %s
+            WHERE r.cod_usuario = %s AND r.destacada = 'S'
             ORDER BY r.cod_resena DESC
             """,
             (cod_usuario,)

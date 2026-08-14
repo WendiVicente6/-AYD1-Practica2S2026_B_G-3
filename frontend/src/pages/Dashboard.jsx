@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Dashboard() {
 
     return (
@@ -55,7 +57,11 @@ function Dashboard() {
                             Consulta y administra tus reseñas.
                         </p>
                     </div>
-                    <div className="quick-card">
+                    <Link
+                        to="/destacadas"
+                        className="quick-card"
+                        style={{ textDecoration: "none", color: "inherit", display: "block" }}
+                    >
                         <img src="/mensaje-destacado.png" 
                                  alt="destacado"   
                                  style={{ width: '50px', height: '50px' }}  
@@ -64,7 +70,7 @@ function Dashboard() {
                         <p>
                             Encuentra tus reseñas favoritas.
                         </p>
-                    </div>
+                    </Link>
                     <div className="quick-card">
                        <img src="/archivado.png" 
                                  alt="archivado"   

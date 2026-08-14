@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { obtenerResenias } from "../api/destacar.js";
+import { obtenerResenias, destacarResenia } from "../api/destacar.js";
 
 export default function Featured() {
 
@@ -25,14 +25,30 @@ export default function Featured() {
         }
     };
 
-    const handleToggleDestacada = (codResena, checked) => {
+    const handleToggleDestacada = async (codResena, checked) => {
+        const nuevoValor = checked ? "S" : "N";
+
         setResenia((prev) =>
             prev.map((item) =>
                 item.cod_resena === codResena
-                    ? { ...item, destacada: checked ? "S" : "N" }
+                    ? { ...item, destacada: nuevoValor }
                     : item
             )
         );
+
+        try {
+            await destacarResenia(codResena, checked ? 1 : 0);
+            setError("");
+        } catch (error) {
+            setResenia((prev) =>
+                prev.map((item) =>
+                    item.cod_resena === codResena
+                        ? { ...item, destacada: checked ? "N" : "S" }
+                        : item
+                )
+            );
+            setError("No se pudo actualizar la reseña destacada. Intente nuevamente.");
+        }
     };
 
     useEffect(() => {
@@ -61,6 +77,16 @@ export default function Featured() {
     if (loading) return <div className="w-full min-h-screen flex items-center justify-center">Cargando...</div>;
     if (error) return <div className="w-full min-h-screen flex items-center justify-center text-red-500">{error}</div>;
 
+    if(resenia.length === 0) {
+        return (
+            <div className="w-full min-h-screen flex items-center justify-center">
+                <div className="text-center">
+                    <h2 className="text-2xl font-bold text-green-200 mb-4">No hay Reseñas Destacadas</h2>
+                    <p className="text-blue-400">Aún no has destacado ninguna reseña. ¡Destaca tus favoritas para verlas aquí!</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="w-full min-h-screen bg-gray-50 p-6 md:p-8" id="featured-container">
@@ -70,12 +96,9 @@ export default function Featured() {
                 id="header-featured"
             >
                 <h2 className="mb-2 text-3xl font-extrabold text-gray-900">
-                    Reseñas destacadas
+                    Mis Reseñas destacadas
                 </h2>
 
-                <p className="text-lg text-gray-600">
-                    Marque o desmarque las reseñas para destacarlas.
-                </p>
             </div>
 
             {/* TABLA */}
@@ -96,7 +119,7 @@ export default function Featured() {
                             <th className="px-8 py-5 text-center font-semibold">Título</th>
                             <th className="px-8 py-5 text-center font-semibold">Calificación</th>
                             <th className="px-8 py-5 text-center font-semibold">Comentario/Opinión</th>
-                            <th className="px-8 py-5 text-center font-semibold">Destacar</th>
+                            <th className="px-8 py-5 text-center font-semibold" style={{ display: "none" }}>Destacar</th>
                         </tr>
                     </thead>
 
@@ -128,7 +151,7 @@ export default function Featured() {
                                     {r.comentario}
                                 </td>
 
-                                <td className="px-8 py-6 text-center">
+                                <td className="px-8 py-6 text-center" style={{ display: "none" }}>
                                     <div className="flex justify-center">
                                         <input
                                             type="checkbox"

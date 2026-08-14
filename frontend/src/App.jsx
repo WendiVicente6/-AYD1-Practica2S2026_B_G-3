@@ -9,6 +9,7 @@ import Barra from "./Componentes/Barra";
 import Dashboard from "./pages/Dashboard";
 import Compartidas from "./pages/Compartidas";
 import Notificaciones from "./pages/Notificaciones";
+import Archived from "./pages/Archived";
 
 
 function Placeholder({ title }) {
@@ -65,9 +66,7 @@ function App() {
 
                         <Route
                             path="/archivadas"
-                            element={
-                                <Placeholder title="Reseñas archivadas" />
-                            }
+                            element={<Archived />}
                         />
 
                         <Route

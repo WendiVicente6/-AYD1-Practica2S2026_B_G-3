@@ -329,7 +329,8 @@ def obtener_resenas_archivadas(cod_usuario):
                 r.cod_resena,
                 r.titulo_pelicula,
                 r.calificacion,
-                r.comentario
+                r.comentario,
+                r.archivada
             FROM tresenia r
             WHERE r.cod_usuario = %s AND r.archivada = 'S'
             ORDER BY r.cod_resena DESC

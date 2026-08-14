@@ -9,6 +9,7 @@ import Barra from "./Componentes/Barra";
 import Dashboard from "./pages/Dashboard";
 import Compartidas from "./pages/Compartidas";
 import Notificaciones from "./pages/Notificaciones";
+import Featured from "./pages/Featured";
 
 
 function Placeholder({ title }) {
@@ -59,7 +60,7 @@ function App() {
                         <Route
                             path="/destacadas"
                             element={
-                                <Placeholder title="Reseñas destacadas" />
+                                <Featured />
                             }
                         />
 

@@ -69,8 +69,7 @@ function Dashboard() {
                         <p>
                             Encuentra tus reseñas favoritas.
                         </p>
-                    </div>
-
+                    </Link> 
                     <Link to="/archivadas" className="quick-card-link">
                         <div className="quick-card">
                             <img src="/archivado.png" 

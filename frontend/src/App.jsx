@@ -1,10 +1,13 @@
 import {
     BrowserRouter,
     Routes,
-    Route
+    Route,
+    Navigate
 } from "react-router-dom";
 
+import Login from "./pages/Login";
 import Barra from "./Componentes/Barra";
+import ProtectedRoute from "./Componentes/Protectedroute";
 
 import Dashboard from "./pages/Dashboard";
 import Compartidas from "./pages/Compartidas";
@@ -13,8 +16,9 @@ import Featured from "./pages/Featured";
 import Archived from "./pages/Archived";
 
 
-function Placeholder({ title }) {
 
+// Página temporal
+function Placeholder({ title }) {
     return (
         <div
             style={{
@@ -35,66 +39,111 @@ function Placeholder({ title }) {
 function App() {
 
     return (
-
         <BrowserRouter>
 
-            <div className="app">
+            <Routes>
 
-                <Barra />
+                {/* =====================================
+                    LOGIN
+                ====================================== */}
 
-                <main style={{ flex: 1 }}>
+                <Route
+                    path="/login"
+                    element={<Login />}
+                />
 
-                    <Routes>
 
-                        <Route
-                            path="/"
-                            element={<Dashboard />}
+                {/* =====================================
+                    USUARIO
+                ====================================== */}
+
+                <Route
+                    path="/*"
+                    element={
+                        <ProtectedRoute requiredRole={1}>
+                            <div className="app">
+
+                                <Barra />
+
+                                <main style={{ flex: 1 }}>
+
+                                    <Routes>
+
+                                        <Route
+                                            path="/"
+                                            element={<Dashboard />}
+                                        />
+
+                                        <Route
+                                            path="/mis-resenas"
+                                            element={
+                                                <Placeholder
+                                                    title="Mis reseñas"
+                                                />
+                                            }
+                                        />
+
+                                        <Route
+                                            path="/destacadas"
+                                            element={<Featured />}
+                                        />
+
+                                        <Route
+                                            path="/archivadas"
+                                            element={<Archived />}
+                                        />
+
+                                        <Route
+                                            path="/compartidas"
+                                            element={<Compartidas />}
+                                        />
+
+                                        <Route
+                                            path="/notificaciones"
+                                            element={<Notificaciones />}
+                                        />
+
+                                        <Route
+                                            path="/perfil"
+                                            element={
+                                                <Placeholder
+                                                    title="Mi perfil"
+                                                />
+                                            }
+                                        />
+
+                                    </Routes>
+
+                                </main>
+
+                            </div>
+                        </ProtectedRoute>
+                    }
+                />
+
+
+                
+
+
+                {/* =====================================
+                    CUALQUIER RUTA DESCONOCIDA
+                ====================================== */}
+
+                <Route
+                    path="*"
+                    element={
+                        <Navigate
+                            to="/login"
+                            replace
                         />
+                    }
+                />
 
-                        <Route
-                            path="/mis-resenas"
-                            element={
-                                <Placeholder title="Mis reseñas" />
-                            }
-                        />
-
-                        <Route
-                            path="/destacadas"
-                            element={
-                                <Featured />
-                            }
-                        />
-
-                        <Route
-                            path="/archivadas"
-                            element={<Archived />}
-                        />
-
-                        <Route
-                            path="/compartidas"
-                            element={<Compartidas />}
-                        />
-
-                        <Route
-                            path="/notificaciones"
-                            element={<Notificaciones />}
-                        />
-
-                        <Route
-                            path="/perfil"
-                            element={
-                                <Placeholder title="Mi perfil" />
-                            }
-                        />
-
-                    </Routes>
-
-                </main>
-
-            </div>
+            </Routes>
 
         </BrowserRouter>
     );
 }
+
 
 export default App;

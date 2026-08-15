@@ -1,8 +1,12 @@
+//import { NavLink } from "react-router-dom";
+import "./barra.css";
+
+
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./barra.css";
 
-function Barra() {
+function BarraAdmin() {
 
     const [tipoUsuario, setTipoUsuario] = useState(true); // Cambia a false para simular un usuario normal
 
@@ -10,14 +14,14 @@ function Barra() {
         <aside className="barra">
 
             {tipoUsuario && (
-                <p className="user-type">Usuario</p>
+                <p className="user-type">Usuario Administrador</p>
             )}
 
             <div className="logo">
                 <span>CineCraft</span>
             </div>
             <nav className="navigation">
-                <p className="menu-title">MENÚ PRINCIPAL</p>
+                <p className="menu-title">MENÚ ADMINISTRADOR</p>
                 <NavLink
                     to="/"
                     className={({ isActive }) =>
@@ -33,7 +37,7 @@ function Barra() {
                         isActive ? "nav-item active" : "nav-item"
                     }
                 >
-                    Mis reseñas
+                    Solicitudes
                 </NavLink>
 
                 <NavLink
@@ -42,7 +46,7 @@ function Barra() {
                         isActive ? "nav-item active" : "nav-item"
                     }
                 >
-                    Destacadas
+                    Historial
                 </NavLink>
 
                 <NavLink
@@ -51,35 +55,9 @@ function Barra() {
                         isActive ? "nav-item active" : "nav-item"
                     }
                 >
-                    Archivadas
+                    Reportes
                 </NavLink>
-                <NavLink
-                    to="/compartidas"
-                    className={({ isActive }) =>
-                        isActive ? "nav-item active" : "nav-item"
-                    }
-                >
-                    Compartidas
-                </NavLink>
-                <p className="menu-title secondary-title">
-                    CUENTA
-                </p>
-                <NavLink
-                    to="/notificaciones"
-                    className={({ isActive }) =>
-                        isActive ? "nav-item active" : "nav-item"
-                    }
-                >
-                    Notificaciones
-                </NavLink>
-                <NavLink
-                    to="/perfil"
-                    className={({ isActive }) =>
-                        isActive ? "nav-item active" : "nav-item"
-                    }
-                >
-                    Mi perfil
-                </NavLink>
+                
             </nav>
             <div className="barra-bottom">
                 <button className="logout-button">
@@ -89,4 +67,6 @@ function Barra() {
         </aside>
     );
 }
-export default Barra;
+export default BarraAdmin;
+
+

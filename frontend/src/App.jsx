@@ -1,18 +1,15 @@
-import {
-    BrowserRouter,
-    Routes,
-    Route
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Login from "./pages/Login";
 
 import Barra from "./Componentes/Barra";
+import BarraAdmin from "./Componentes/BarraAdmin";
 
 import Dashboard from "./pages/Dashboard";
-import Compartidas from "./pages/Compartidas";
-import Notificaciones from "./pages/Notificaciones";
+import AdminDashboard from "./pages/AdminDashboard";
 
 
-function Placeholder({ title }) {
-
+function Placeholder({ title, onClick }) {
     return (
         <div
             style={{
@@ -25,76 +22,226 @@ function Placeholder({ title }) {
             <p style={{ color: "#888" }}>
                 Esta sección será implementada posteriormente.
             </p>
+
+            {onClick && (
+                <button
+                    onClick={onClick}
+                    style={{
+                        padding: "10px 20px",
+                        marginTop: "20px",
+                        cursor: "pointer"
+                    }}
+                >
+                    Cerrar Sesión
+                </button>
+            )}
+
+
         </div>
     );
 }
 
 
-function App() {
+function CerrarSesion() {
+    localStorage.clear();
+    window.location.href = "/login";
+}
 
+
+function UsuarioLayout({ children }) {
     return (
+        <div className="app">
 
+            <Barra />
+
+            <main style={{ flex: 1 }}>
+                {children}
+            </main>
+
+        </div>
+    );
+}
+
+
+function AdminLayout({ children }) {
+    return (
+        <div className="app">
+
+            <BarraAdmin />
+
+            <main style={{ flex: 1 }}>
+                {children}
+            </main>
+
+        </div>
+    );
+}
+
+function App() {
+    return (
         <BrowserRouter>
 
-            <div className="app">
+            <Routes>
 
-                <Barra />
+                {/* ================= LOGIN ================= */}
 
-                <main style={{ flex: 1 }}>
+                <Route
+                    path="/"
+                    element={<Login />}
+                />
 
-                    <Routes>
 
-                        <Route
-                            path="/"
-                            element={<Dashboard />}
-                        />
+                {/* ================= USUARIO ================= */}
 
-                        <Route
-                            path="/mis-resenas"
-                            element={
-                                <Placeholder title="Mis reseñas" />
-                            }
-                        />
+                <Route
+                    path="/usuario"
+                    element={
+                        <UsuarioLayout>
+                            <Dashboard />
+                        </UsuarioLayout>
+                    }
+                />
 
-                        <Route
-                            path="/destacadas"
-                            element={
-                                <Placeholder title="Reseñas destacadas" />
-                            }
-                        />
+                <Route
+                    path="/mis-resenas"
+                    element={
+                        <UsuarioLayout>
+                            <Placeholder title="Mis reseñas" />
+                        </UsuarioLayout>
+                    }
+                />
 
-                        <Route
-                            path="/archivadas"
-                            element={
-                                <Placeholder title="Reseñas archivadas" />
-                            }
-                        />
+                <Route
+                    path="/destacadas"
+                    element={
+                        <UsuarioLayout>
+                            <Placeholder title="Reseñas destacadas" />
+                        </UsuarioLayout>
+                    }
+                />
 
-                        <Route
-                            path="/compartidas"
-                            element={<Compartidas />}
-                        />
+                <Route
+                    path="/archivadas"
+                    element={
+                        <UsuarioLayout>
+                            <Placeholder title="Reseñas archivadas" />
+                        </UsuarioLayout>
+                    }
+                />
 
-                        <Route
-                            path="/notificaciones"
-                            element={<Notificaciones />}
-                        />
+                <Route
+                    path="/compartidas"
+                    element={
+                        <UsuarioLayout>
+                            <Placeholder title="Reseñas compartidas" />
+                        </UsuarioLayout>
+                    }
+                />
 
-                        <Route
-                            path="/perfil"
-                            element={
-                                <Placeholder title="Mi perfil" />
-                            }
-                        />
+                <Route
+                    path="/notificaciones"
+                    element={
+                        <UsuarioLayout>
+                            <Placeholder title="Notificaciones" />
+                        </UsuarioLayout>
+                    }
+                />
 
-                    </Routes>
+                <Route
+                    path="/perfil"
+                    element={
+                        <UsuarioLayout>
+                            <Placeholder title="Mi perfil" />
+                        </UsuarioLayout>
+                    }
+                />
 
-                </main>
+                <Route
+                    path="/CerrarSesion"
+                    element={
+                        <UsuarioLayout>
+                            <Placeholder title="Cerrar Sesión" 
+                             onClick={CerrarSesion}
+                            />
+                        </UsuarioLayout>
+        
+        }
 
-            </div>
+        
+    
+/>  
+            
+
+
+                {/* ================= ADMIN ================= */}
+
+                <Route
+                    path="/admin"
+                    element={
+                        <AdminLayout>
+                            <AdminDashboard />
+                        </AdminLayout>
+                    }
+                />
+
+
+
+                <Route
+                    path="/Solicitudes"
+                    element={
+                        <AdminLayout>
+                            <Placeholder title="Solicitudes" />
+                        </AdminLayout>
+                    }
+                />
+
+                <Route
+                    path="/Historial"
+                    element={
+                        <AdminLayout>
+                            <Placeholder title="Historial" />
+                        </AdminLayout>
+                    }
+                />
+
+                <Route
+                    path="/reportes"
+                    element={
+                        <AdminLayout>
+                            <Placeholder title="Reportes" />
+                        </AdminLayout>
+                    }
+                />
+
+                <Route
+                    path="/CerrarSesion"
+                    element={
+                        <AdminLayout>
+                            <Placeholder title="Cerrar Sesión" 
+                             onClick={CerrarSesion}
+                            />
+                        </AdminLayout>
+        
+        }
+
+        
+    
+/>  
+
+
+
+
+
+
+
+            </Routes>
 
         </BrowserRouter>
     );
 }
 
+
 export default App;
+
+
+

@@ -1,8 +1,8 @@
 import {API_URL} from "./compartir.js";
+import {getCurrentUserId} from "../utils/auth.js";
 
-localStorage.setItem('cod_usuario', '4'); // Simulación de usuario logueado
 
-let cod_usuario = localStorage.getItem('cod_usuario');
+let cod_usuario = getCurrentUserId();
 
 export async function obtenerResenias(){
     let res = await fetch(`${API_URL}/api/resenas/obtener/usuario/${cod_usuario}`);

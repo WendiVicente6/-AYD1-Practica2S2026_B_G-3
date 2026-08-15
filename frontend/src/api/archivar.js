@@ -1,5 +1,5 @@
 import {API_URL} from "./compartir.js";
-import {getCurrentUserId, setCurrentUserId} from "../utils/auth.js";
+import {getCurrentUserId} from "../utils/auth.js";
 
 export async function ObtenerArchivadas() {
     const cod_usuario = getCurrentUserId();

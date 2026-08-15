@@ -14,7 +14,7 @@ import Compartidas from "./pages/Compartidas";
 import Notificaciones from "./pages/Notificaciones";
 import Featured from "./pages/Featured";
 import Archived from "./pages/Archived";
-
+import MisResenas from "./pages/MisResenas";
 
 
 // Página temporal

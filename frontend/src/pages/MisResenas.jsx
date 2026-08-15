@@ -1,115 +1,120 @@
-import { useEffect, useState } from "react";
-import { obtenerMisResenas, eliminarResena } from "../api/eliminar.js";
-import ModalConfirmarEliminar from "../Componentes/ModalConfirmarEliminar.jsx";
+import { useState, useEffect } from "react";
+import { obtenerMisResenas, eliminarResena } from "../api/resenas";
+import { getCurrentUserId } from "../utils/auth";
+import ModalResena from "../Componentes/ModalResena";
+import ModalConfirmarEliminar from "../Componentes/ModalConfirmarEliminar";
+import "./MisResenas.css";
 
-export default function MisResenas() {
-    const [resenias, setResenias] = useState([]);
-    const [loading, setLoading] = useState(true);
+function MisResenas() {
+    const [resenas, setResenas] = useState([]);
+    const [cargando, setCargando] = useState(true);
     const [error, setError] = useState("");
+    const [modalAbierto, setModalAbierto] = useState(false);
+    const [resenaEditar, setResenaEditar] = useState(null);
     const [resenaAEliminar, setResenaAEliminar] = useState(null);
 
-    const cargarResenias = async () => {
+    const codUsuario = getCurrentUserId();
+
+    const cargarResenas = async () => {
+        setCargando(true);
+        setError("");
         try {
-            setLoading(true);
-            const data = await obtenerMisResenas();
-            setResenias(data);
-            setError("");
+            const data = await obtenerMisResenas(codUsuario);
+            setResenas(data);
         } catch (err) {
-            setError("Error al cargar las reseñas");
+            setError(err.message);
         } finally {
-            setLoading(false);
+            setCargando(false);
         }
     };
 
     useEffect(() => {
-        cargarResenias();
+        cargarResenas();
     }, []);
+
+    const handleNuevaResena = () => {
+        setResenaEditar(null);
+        setModalAbierto(true);
+    };
+
+    const handleEditar = (resena) => {
+        setResenaEditar(resena);
+        setModalAbierto(true);
+    };
+
+    const handleGuardado = () => {
+        cargarResenas();
+    };
 
     const handleEliminar = async () => {
         await eliminarResena(resenaAEliminar.cod_resena);
-        setResenias((prev) =>
+        setResenas((prev) =>
             prev.filter((r) => r.cod_resena !== resenaAEliminar.cod_resena)
         );
         setResenaAEliminar(null);
     };
 
-    if (loading) {
-        return (
-            <div className="w-full min-h-screen flex items-center justify-center">
-                Cargando...
-            </div>
-        );
-    }
-
-    if (error) {
-        return (
-            <div className="w-full min-h-screen flex items-center justify-center text-red-500">
-                {error}
-            </div>
-        );
-    }
-
     return (
-        <div className="w-full min-h-screen bg-gray-50 p-6 md:p-8" id="mis-resenas-container">
-            <div className="mb-8 w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-                <h2 className="mb-2 text-3xl font-extrabold text-gray-900">
-                    Mis reseñas
-                </h2>
+        <div className="dashboard">
+            <div className="dashboard-header">
+                <div>
+                    <p className="welcome-text">Gestiona tus opiniones</p>
+                    <h1>Mis reseñas</h1>
+                </div>
+                <button className="btn-primario" onClick={handleNuevaResena}>
+                    + Nueva reseña
+                </button>
             </div>
 
-            {resenias.length === 0 ? (
-                <div className="w-full flex items-center justify-center">
-                    <div className="text-center">
-                        <h3 className="text-xl font-bold text-gray-700 mb-2">
-                            Aún no tienes reseñas
-                        </h3>
-                        <p className="text-gray-500">
-                            Cuando agregues una reseña, aparecerá aquí.
-                        </p>
+            {cargando && <p className="modal-hint">Cargando tus reseñas...</p>}
+            {error && <p className="modal-error">{error}</p>}
+
+            {!cargando && resenas.length === 0 && !error && (
+                <p className="modal-hint">Todavía no tienes reseñas. ¡Crea la primera!</p>
+            )}
+
+            <div className="lista-resenas">
+                {resenas.map((r) => (
+                    <div className="tarjeta-resena" key={r.cod_resena}>
+                        <div className="tarjeta-resena-header">
+                            <h3>{r.titulo_pelicula}</h3>
+                            <span className="estrellas-readonly">
+                                {"★".repeat(r.calificacion)}
+                                {"☆".repeat(5 - r.calificacion)}
+                            </span>
+                        </div>
+                        <p className="tarjeta-comentario">{r.comentario}</p>
+                        {r.etiquetas?.length > 0 && (
+                            <div className="lista-etiquetas">
+                                {r.etiquetas.map((e) => (
+                                    <span className="chip-etiqueta" key={e}>{e}</span>
+                                ))}
+                            </div>
+                        )}
+                        <div className="tarjeta-resena-acciones">
+                            <button
+                                className="btn-secundario"
+                                onClick={() => handleEditar(r)}
+                            >
+                                Editar
+                            </button>
+                            <button
+                                className="btn-eliminar-resena"
+                                onClick={() => setResenaAEliminar(r)}
+                            >
+                                Eliminar
+                            </button>
+                        </div>
                     </div>
-                </div>
-            ) : (
-                <div className="w-full overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
-                    <table className="w-full min-w-[900px] table-auto text-center text-sm text-gray-700">
-                        <thead className="bg-gray-100 text-gray-700">
-                            <tr>
-                                <th className="px-8 py-5 text-center font-semibold">ID</th>
-                                <th className="px-8 py-5 text-center font-semibold">Título</th>
-                                <th className="px-8 py-5 text-center font-semibold">Calificación</th>
-                                <th className="px-8 py-5 text-center font-semibold">Comentario/Opinión</th>
-                                <th className="px-8 py-5 text-center font-semibold">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-200 bg-white">
-                            {resenias.map((r) => (
-                                <tr key={r.cod_resena} className="transition-colors hover:bg-gray-50">
-                                    <td className="px-8 py-6 text-center font-medium text-gray-900">
-                                        {r.cod_resena}
-                                    </td>
-                                    <td className="px-8 py-6 text-center text-gray-900">
-                                        {r.titulo_pelicula}
-                                    </td>
-                                    <td className="px-8 py-6 text-center">
-                                        <span className="font-bold text-amber-600">
-                                            {r.calificacion}
-                                        </span>
-                                    </td>
-                                    <td className="px-8 py-6 text-center text-gray-600">
-                                        {r.comentario}
-                                    </td>
-                                    <td className="px-8 py-6 text-center">
-                                        <button
-                                            className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
-                                            onClick={() => setResenaAEliminar(r)}
-                                        >
-                                            Eliminar
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                ))}
+            </div>
+
+            {modalAbierto && (
+                <ModalResena
+                    resenaExistente={resenaEditar}
+                    onClose={() => setModalAbierto(false)}
+                    onGuardado={handleGuardado}
+                />
             )}
 
             {resenaAEliminar && (
@@ -122,3 +127,5 @@ export default function MisResenas() {
         </div>
     );
 }
+
+export default MisResenas;

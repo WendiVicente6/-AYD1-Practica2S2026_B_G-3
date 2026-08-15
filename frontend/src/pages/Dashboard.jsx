@@ -72,7 +72,7 @@ function Dashboard() {
                         </div>
                     </Link>
 
-                    <Link to="/archivadas" className="quick-card">
+                    <Link to="/archivadas" className="quick-card-link">
                         <div className="quick-card">
                             <img src="/archivado.png" 
                                  alt="archivado"   
@@ -85,19 +85,18 @@ function Dashboard() {
                         </div>
                     </Link>
 
-                    <div className="quick-card">
-                        <img src="/compartir.png" 
-                                 alt="compartir"   
-                                 style={{ width: '50px', height: '50px' }}  
-                            />
-                        <h3>Compartidas</h3>
-                        <p>
-                            Revisa las reseñas compartidas.
-                        </p>
-                    </div>
-                </div>
-            </section>
+          <div className="quick-card">
+            <img
+              src="/compartir.png"
+              alt="compartir"
+              style={{ width: "50px", height: "50px" }}
+            />
+            <h3>Compartidas</h3>
+            <p>Revisa las reseñas compartidas.</p>
+          </div>
         </div>
-    );
+      </section>
+    </div>
+  );
 }
 export default Dashboard;

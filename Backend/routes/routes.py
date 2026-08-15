@@ -445,29 +445,37 @@ def archivar_resena(cod_usuario, cod_resena, check):
         cursor.close()
         conn.close()
 
-
-@resenas_bp.route("/api/resenas/mias/<int:cod_usuario>", methods=["GET"])
-def obtener_mis_resenas(cod_usuario):
-    """Obtiene las reseñas activas (no archivadas) de un usuario, para la pantalla Mis reseñas."""
+@resenas_bp.route("/api/resenas/usuario/<int:cod_usuario>", methods=["GET"])
+def listar_resenas_usuario(cod_usuario):
+    """Todas las reseñas de un usuario, con sus etiquetas."""
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     try:
         cursor.execute(
             """
-            SELECT
-                r.cod_resena,
-                r.titulo_pelicula,
-                r.calificacion,
-                r.comentario,
-                r.destacada,
-                r.archivada
-            FROM tresenia r
-            WHERE r.cod_usuario = %s AND r.archivada = 'N'
-            ORDER BY r.cod_resena DESC
+            SELECT cod_resena, titulo_pelicula, calificacion, comentario,
+                   destacada, archivada, fec_creacion, fec_modificacion
+            FROM tresenia
+            WHERE cod_usuario = %s
+            ORDER BY fec_creacion DESC
             """,
             (cod_usuario,)
         )
-        return jsonify(cursor.fetchall()), 200
+        resenas = cursor.fetchall()
+
+        for r in resenas:
+            cursor.execute(
+                """
+                SELECT te.nombre
+                FROM tresenia_etiqueta rt
+                INNER JOIN tetiqueta te ON te.cod_etiqueta = rt.cod_etiqueta
+                WHERE rt.cod_resenia = %s
+                """,
+                (r["cod_resena"],)
+            )
+            r["etiquetas"] = [row["nombre"] for row in cursor.fetchall()]
+
+        return jsonify(resenas), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     finally:

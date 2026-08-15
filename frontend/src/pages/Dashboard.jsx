@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-
 function Dashboard() {
 
     return (
@@ -70,17 +69,21 @@ function Dashboard() {
                         <p>
                             Encuentra tus reseñas favoritas.
                         </p>
-                    </Link>
-                    <div className="quick-card">
-                       <img src="/archivado.png" 
+                    </div>
+
+                    <Link to="/archivadas" className="quick-card-link">
+                        <div className="quick-card">
+                            <img src="/archivado.png" 
                                  alt="archivado"   
                                  style={{ width: '50px', height: '50px' }}  
                             />
-                        <h3>Archivadas</h3>
-                        <p>
-                            Consulta tus reseñas archivadas.
-                        </p>
-                    </div>
+                            <h3>Archivadas</h3>
+                            <p>
+                                Consulta tus reseñas archivadas.
+                            </p>
+                        </div>
+                    </Link>
+
                     <div className="quick-card">
                         <img src="/compartir.png" 
                                  alt="compartir"   

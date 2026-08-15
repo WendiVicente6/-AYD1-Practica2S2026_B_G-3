@@ -6,7 +6,6 @@ function AdminDashboard() {
                 <div>
                     <p className="welcome-text">
 
-
                         Bienvenido de nuevo
                     </p>
                     <h1>
@@ -43,8 +42,9 @@ function AdminDashboard() {
                     </h2>
                 </div>
                 <div className="quick-actions">
+                    +
                     <div className="quick-card">
-                        <img src="/resenas.png" 
+                        <img src="/usuarios.png" 
                                  alt="Aprobación de usuarios"   
                                  style={{ width: '50px', height: '50px' }}  
                             />
@@ -54,7 +54,7 @@ function AdminDashboard() {
                         </p>
                     </div>
                     <div className="quick-card">
-                        <img src="/mensaje-destacado.png" 
+                        <img src="/historial.png" 
                                  alt="historial"   
                                  style={{ width: '50px', height: '50px' }}  
                             />
@@ -76,9 +76,87 @@ function AdminDashboard() {
                   
                 </div>
             </section>
+            
         </div>
     );
 }
 export default AdminDashboard;
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//import BarraAdmin from "../Componentes/BarraAdmin";
+//import HeaderAdmin from "../Componentes/HeaderAdmin";
+/*
+function AdminDashboard() {
+    return (
+        <div className="admin-layout">
+
+            
+
+            <main className="admin-main">
+
+                <HeaderAdmin />
+
+                <section className="admin-content">
+
+                    <h2>Resumen</h2>
+
+                    <div className="admin-cards">
+
+                        <div className="admin-card">
+                            <span>Solicitudes pendientes</span>
+                            <strong>4</strong>
+                        </div>
+
+                        <div className="admin-card">
+                            <span>Usuarios registrados</span>
+                            <strong>120</strong>
+                        </div>
+
+                        <div className="admin-card">
+                            <span>Total de reseñas</span>
+                            <strong>500</strong>
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </main>
+
+        </div>
+    );
+}
+
+export default AdminDashboard;*/

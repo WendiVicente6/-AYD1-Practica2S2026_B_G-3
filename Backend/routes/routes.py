@@ -444,3 +444,32 @@ def archivar_resena(cod_usuario, cod_resena, check):
     finally:
         cursor.close()
         conn.close()
+
+
+@resenas_bp.route("/api/resenas/mias/<int:cod_usuario>", methods=["GET"])
+def obtener_mis_resenas(cod_usuario):
+    """Obtiene las reseñas activas (no archivadas) de un usuario, para la pantalla Mis reseñas."""
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    try:
+        cursor.execute(
+            """
+            SELECT
+                r.cod_resena,
+                r.titulo_pelicula,
+                r.calificacion,
+                r.comentario,
+                r.destacada,
+                r.archivada
+            FROM tresenia r
+            WHERE r.cod_usuario = %s AND r.archivada = 'N'
+            ORDER BY r.cod_resena DESC
+            """,
+            (cod_usuario,)
+        )
+        return jsonify(cursor.fetchall()), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        conn.close()

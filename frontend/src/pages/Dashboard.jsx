@@ -56,22 +56,21 @@ function Dashboard() {
                             Consulta y administra tus reseñas.
                         </p>
                     </div>
-                    <Link
-                        to="/destacadas"
-                        className="quick-card"
-                        style={{ textDecoration: "none", color: "inherit", display: "block" }}
-                    >
-                        <img src="/mensaje-destacado.png" 
-                                 alt="destacado"   
-                                 style={{ width: '50px', height: '50px' }}  
-                            />
-                        <h3>Destacadas</h3>
-                        <p>
-                            Encuentra tus reseñas favoritas.
-                        </p>
-                    </div>
 
-                    <Link to="/archivadas" className="quick-card-link">
+                    <Link to="/destacadas" className="quick-card">
+                        <div className="quick-card">
+                            <img src="/mensaje-destacado.png" 
+                                    alt="destacado"   
+                                    style={{ width: '50px', height: '50px' }}  
+                                />
+                            <h3>Destacadas</h3>
+                            <p>
+                                Encuentra tus reseñas favoritas.
+                            </p>
+                        </div>
+                    </Link>
+
+                    <Link to="/archivadas" className="quick-card">
                         <div className="quick-card">
                             <img src="/archivado.png" 
                                  alt="archivado"   

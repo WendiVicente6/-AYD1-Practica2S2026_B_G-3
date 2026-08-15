@@ -11,7 +11,7 @@ import Compartidas from "./pages/Compartidas";
 import Notificaciones from "./pages/Notificaciones";
 import Featured from "./pages/Featured";
 import Archived from "./pages/Archived";
-
+import MisResenas from "./pages/MisResenas";
 
 function Placeholder({ title }) {
 
@@ -54,7 +54,7 @@ function App() {
                         <Route
                             path="/mis-resenas"
                             element={
-                                <Placeholder title="Mis reseñas" />
+                                <MisResenas />
                             }
                         />
 

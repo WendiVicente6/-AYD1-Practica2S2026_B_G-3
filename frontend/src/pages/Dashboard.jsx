@@ -46,16 +46,18 @@ function Dashboard() {
                     </h2>
                 </div>
                 <div className="quick-actions">
-                    <div className="quick-card">
-                        <img src="/resenas.png" 
-                                 alt="Reseña"   
-                                 style={{ width: '50px', height: '50px' }}  
-                            />
-                        <h3>Mis reseñas</h3>
-                        <p>
-                            Consulta y administra tus reseñas.
-                        </p>
-                    </div>
+                    <Link to="/mis-resenas" className="quick-card">
+                        <div className="quick-card">
+                            <img src="/resenas.png"
+                                     alt="Reseña"
+                                     style={{ width: '50px', height: '50px' }}
+                                />
+                            <h3>Mis reseñas</h3>
+                            <p>
+                                Consulta y administra tus reseñas.
+                            </p>
+                        </div>
+                    </Link>
 
                     <Link to="/destacadas" className="quick-card">
                         <div className="quick-card">

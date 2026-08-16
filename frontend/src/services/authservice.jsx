@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api";
+import {API_URL} from "../api/compartir.js";
 
 export async function login(email, password) {
 

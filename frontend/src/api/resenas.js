@@ -1,7 +1,7 @@
-const API_URL = "http://localhost:5000";
+import {API_URL} from "./compartir.js";
 
 export async function crearResena(datos) {
-    const res = await fetch(`${API_URL}/api/resenas`, {
+    const res = await fetch(`${API_URL}/resenas`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(datos)
@@ -14,7 +14,7 @@ export async function crearResena(datos) {
 }
 
 export async function modificarResena(codResena, datos) {
-    const res = await fetch(`${API_URL}/api/resenas/${codResena}`, {
+    const res = await fetch(`${API_URL}/resenas/${codResena}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(datos)
@@ -27,7 +27,7 @@ export async function modificarResena(codResena, datos) {
 }
 
 export async function obtenerMisResenas(codUsuario) {
-    const res = await fetch(`${API_URL}/api/resenas/usuario/${codUsuario}`);
+    const res = await fetch(`${API_URL}/resenas/usuario/${codUsuario}`);
     if (!res.ok) {
         throw new Error("No se pudieron cargar tus reseñas");
     }
@@ -35,7 +35,7 @@ export async function obtenerMisResenas(codUsuario) {
 }
 
 export async function eliminarResena(codResena) {
-    const res = await fetch(`${API_URL}/api/resenas/${codResena}`, {
+    const res = await fetch(`${API_URL}/resenas/${codResena}`, {
         method: "DELETE"
     });
     const data = await res.json();

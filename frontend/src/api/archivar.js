@@ -3,7 +3,7 @@ import {getCurrentUserId} from "../utils/auth.js";
 
 export async function ObtenerArchivadas() {
     const cod_usuario = getCurrentUserId();
-    let res = await fetch(`${API_URL}/api/resenas/archivadas/${cod_usuario}`);
+    let res = await fetch(`${API_URL}/resenas/archivadas/${cod_usuario}`);
     let data = await res.json();
     if(!res.ok){
         throw new Error(data.error || "No se pudieron cargar las reseñas archivadas");
@@ -13,7 +13,7 @@ export async function ObtenerArchivadas() {
 
 export async function ArchivarResena(codResena, check) {
     const cod_usuario = getCurrentUserId();
-    let res = await fetch(`${API_URL}/api/resenas/archivar/${cod_usuario}/${codResena}/${check}`,
+    let res = await fetch(`${API_URL}/resenas/archivar/${cod_usuario}/${codResena}/${check}`,
     {method: 'POST'}
     );
     let data = await res.json();

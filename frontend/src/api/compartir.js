@@ -5,7 +5,7 @@ export async function buscarUsuarios(termino, codUsuarioActual) {
         q: termino,
         cod_usuario_actual: codUsuarioActual
     });
-    const res = await fetch(`${API_URL}/api/usuarios/buscar?${params}`);
+    const res = await fetch(`${API_URL}/usuarios/buscar?${params}`);
     if (!res.ok) {
         throw new Error("No se pudo buscar usuarios");
     }
@@ -13,7 +13,7 @@ export async function buscarUsuarios(termino, codUsuarioActual) {
 }
 
 export async function compartirResena(codResena, codUsuarioOrigen, codUsuarioDestino) {
-    const res = await fetch(`${API_URL}/api/resenas/${codResena}/compartir`, {
+    const res = await fetch(`${API_URL}/resenas/${codResena}/compartir`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -30,7 +30,7 @@ export async function compartirResena(codResena, codUsuarioOrigen, codUsuarioDes
 
 export async function dejarDeCompartir(codResena, codUsuarioDestino) {
     const res = await fetch(
-        `${API_URL}/api/resenas/${codResena}/compartir/${codUsuarioDestino}`,
+        `${API_URL}/resenas/${codResena}/compartir/${codUsuarioDestino}`,
         { method: "DELETE" }
     );
     const data = await res.json();
@@ -41,7 +41,7 @@ export async function dejarDeCompartir(codResena, codUsuarioDestino) {
 }
 
 export async function obtenerCompartidasConmigo(codUsuario) {
-    const res = await fetch(`${API_URL}/api/compartidas-conmigo/${codUsuario}`);
+    const res = await fetch(`${API_URL}/compartidas-conmigo/${codUsuario}`);
     if (!res.ok) {
         throw new Error("No se pudieron cargar las reseñas compartidas contigo");
     }
@@ -49,7 +49,7 @@ export async function obtenerCompartidasConmigo(codUsuario) {
 }
 
 export async function obtenerMisCompartidas(codUsuario) {
-    const res = await fetch(`${API_URL}/api/mis-compartidas/${codUsuario}`);
+    const res = await fetch(`${API_URL}/mis-compartidas/${codUsuario}`);
     if (!res.ok) {
         throw new Error("No se pudieron cargar tus reseñas compartidas");
     }

@@ -1,7 +1,30 @@
 import { NavLink } from "react-router-dom";
 import "./barra.css";
+import { useState } from "react";
+import { logout } from "../services/authservice"
+import { useNavigate } from "react-router-dom";
+import { setCurrentUserId } from "../utils/auth.js";
 
 function Barra() {
+    const navigate = useNavigate();
+    const [logOutError, setLogoutError] = useState("");
+    const [mensajeLogout, setMensajeLogout] = useState("");
+
+    const handleLogout = async () => {
+        try {
+            await logout();
+            setMensajeLogout("Cerrando Sesión...");
+
+            // Damos 1 segundo para que el usuario pueda ver el mensaje en pantalla antes de redirigir
+            setTimeout(() => {
+                navigate("/login");
+                setCurrentUserId(null);
+            }, 2000);
+        } catch (err) {
+            setLogoutError("Error al cerrar sesión.");
+        }
+    };
+
     return (
         <aside className="barra">
 
@@ -73,10 +96,18 @@ function Barra() {
                     Mi perfil
                 </NavLink>
             </nav>
+
             <div className="barra-bottom">
-                <button className="logout-button">
-                    Cerrar sesión
+                <button
+                    className="logout-button"
+                    id="logout-button"
+                    name="logout-button"
+                    type="button"
+                    onClick={handleLogout}>
+                    Cerrar Sesión
                 </button>
+                {logOutError && <p className="text-sm text-green-600 mt-2 text-center">{logOutError}</p>}
+                {mensajeLogout && <p className="text-sm text-red-600 mt-2 text-center">{mensajeLogout}</p>}
             </div>
         </aside>
     );

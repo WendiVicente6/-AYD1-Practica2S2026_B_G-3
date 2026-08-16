@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { obtenerMisResenas } from "../api/resenas";
+import { obtenerMisResenas, eliminarResena } from "../api/resenas";
 import { getCurrentUserId } from "../utils/auth";
 import ModalResena from "../Componentes/ModalResena";
+import ModalConfirmarEliminar from "../Componentes/ModalConfirmarEliminar";
 import "./MisResenas.css";
 
 function MisResenas() {
@@ -10,6 +11,7 @@ function MisResenas() {
     const [error, setError] = useState("");
     const [modalAbierto, setModalAbierto] = useState(false);
     const [resenaEditar, setResenaEditar] = useState(null);
+    const [resenaAEliminar, setResenaAEliminar] = useState(null);
 
     const codUsuario = getCurrentUserId();
 
@@ -42,6 +44,14 @@ function MisResenas() {
 
     const handleGuardado = () => {
         cargarResenas();
+    };
+
+    const handleEliminar = async () => {
+        await eliminarResena(resenaAEliminar.cod_resena);
+        setResenas((prev) =>
+            prev.filter((r) => r.cod_resena !== resenaAEliminar.cod_resena)
+        );
+        setResenaAEliminar(null);
     };
 
     return (
@@ -81,12 +91,20 @@ function MisResenas() {
                                 ))}
                             </div>
                         )}
-                        <button
-                            className="btn-secundario"
-                            onClick={() => handleEditar(r)}
-                        >
-                            Editar
-                        </button>
+                        <div className="tarjeta-resena-acciones">
+                            <button
+                                className="btn-secundario"
+                                onClick={() => handleEditar(r)}
+                            >
+                                Editar
+                            </button>
+                            <button
+                                className="btn-eliminar-resena"
+                                onClick={() => setResenaAEliminar(r)}
+                            >
+                                Eliminar
+                            </button>
+                        </div>
                     </div>
                 ))}
             </div>
@@ -96,6 +114,14 @@ function MisResenas() {
                     resenaExistente={resenaEditar}
                     onClose={() => setModalAbierto(false)}
                     onGuardado={handleGuardado}
+                />
+            )}
+
+            {resenaAEliminar && (
+                <ModalConfirmarEliminar
+                    titulo={resenaAEliminar.titulo_pelicula}
+                    onClose={() => setResenaAEliminar(null)}
+                    onConfirmar={handleEliminar}
                 />
             )}
         </div>

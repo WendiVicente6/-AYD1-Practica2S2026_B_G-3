@@ -76,11 +76,7 @@ function App() {
 
                                         <Route
                                             path="/mis-resenas"
-                                            element={
-                                                <Placeholder
-                                                    title="Mis reseñas"
-                                                />
-                                            }
+                                            element={<MisResenas />}
                                         />
 
                                         <Route

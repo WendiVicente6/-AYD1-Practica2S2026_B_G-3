@@ -33,3 +33,14 @@ export async function obtenerMisResenas(codUsuario) {
     }
     return res.json();
 }
+
+export async function eliminarResena(codResena) {
+    const res = await fetch(`${API_URL}/api/resenas/${codResena}`, {
+        method: "DELETE"
+    });
+    const data = await res.json();
+    if (!res.ok) {
+        throw new Error(data.error || "No se pudo eliminar la reseña");
+    }
+    return data;
+}

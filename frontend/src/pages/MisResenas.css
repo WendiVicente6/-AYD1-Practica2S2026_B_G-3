@@ -41,7 +41,29 @@
     margin: 0;
 }
 
+.tarjeta-resena-acciones {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+}
+
 .tarjeta-resena .btn-secundario {
     align-self: flex-start;
-    margin-top: auto;
+}
+
+.btn-eliminar-resena {
+    align-self: flex-start;
+    background: transparent;
+    border: 1px solid #f87171;
+    color: #f87171;
+    font-size: 14px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-eliminar-resena:hover {
+    background: #f87171;
+    color: #0b0b0b;
 }

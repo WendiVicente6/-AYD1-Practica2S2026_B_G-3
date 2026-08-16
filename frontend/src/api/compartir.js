@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000";
+export const API_URL = "http://localhost:9000/api";
 
 export async function buscarUsuarios(termino, codUsuarioActual) {
     const params = new URLSearchParams({

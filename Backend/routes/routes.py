@@ -316,3 +316,168 @@ def buscar_usuarios():
     finally:
         cursor.close()
         conn.close()
+
+@resenas_bp.route("/api/resenas/obtener/usuario/<int:cod_usuario>", methods=["GET"])
+def obtener_resenas_del_usuario(cod_usuario):
+    """Obtiene todas las reseñas de un usuario específico."""
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    try:
+        cursor.execute(
+            """
+            SELECT
+                r.cod_resena,
+                r.titulo_pelicula,
+                r.calificacion,
+                r.comentario,
+                r.destacada
+            FROM tresenia r
+            WHERE r.cod_usuario = %s AND r.destacada = 'S'
+            ORDER BY r.cod_resena DESC
+            """,
+            (cod_usuario,)
+        )
+        return jsonify(cursor.fetchall()), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        conn.close()
+
+@resenas_bp.route("/api/resenas/destacar/<int:cod_usuario>/<int:cod_resena>/<int:check>", methods=["POST"])
+def destacar_resena(cod_usuario, cod_resena, check):
+    """Destaca una reseña específica de un usuario."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        # Verificar si la reseña pertenece al usuario
+        cursor.execute(
+            "SELECT cod_resena FROM tresenia WHERE cod_resena = %s AND cod_usuario = %s",
+            (cod_resena, cod_usuario)
+        )
+        if cursor.fetchone() is None:
+            return jsonify({"error": "La reseña no pertenece al usuario"}), 403
+        
+        # Si check es 0, desmarcar la reseña
+        if check == 0:
+            cursor.execute(
+                "UPDATE tresenia SET destacada = 'N', fec_modificacion = NOW() WHERE cod_resena = %s AND cod_usuario = %s",
+                (cod_resena, cod_usuario)
+            )
+        elif check == 1:
+            # Destacar la resenia si le pertenece al usuario
+            cursor.execute(
+                "UPDATE tresenia SET destacada = 'S', fec_modificacion = NOW() WHERE cod_resena = %s AND cod_usuario = %s",
+                (cod_resena, cod_usuario)
+            )
+        else:
+            return jsonify({"error": "Valor de check inválido"}), 400
+        conn.commit()
+        return jsonify({"message": "Reseña destacada correctamente"}), 200
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        conn.close()
+
+@resenas_bp.route("/api/resenas/archivadas/<int:cod_usuario>", methods=["GET"])
+def obtener_resenas_archivadas(cod_usuario):
+    """Obtiene todas las reseñas archivadas de un usuario específico."""
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    try:
+        cursor.execute(
+            """
+            SELECT
+                r.cod_resena,
+                r.titulo_pelicula,
+                r.calificacion,
+                r.comentario,
+                r.archivada
+            FROM tresenia r
+            WHERE r.cod_usuario = %s AND r.archivada = 'S'
+            ORDER BY r.cod_resena DESC
+            """,
+            (cod_usuario,)
+        )
+        return jsonify(cursor.fetchall()), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        conn.close()
+
+@resenas_bp.route("/api/resenas/archivar/<int:cod_usuario>/<int:cod_resena>/<int:check>", methods=["POST"])
+def archivar_resena(cod_usuario, cod_resena, check):
+    """Archiva o desarchiva una reseña específica de un usuario."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        # Verificar si la reseña pertenece al usuario
+        cursor.execute(
+            "SELECT cod_resena FROM tresenia WHERE cod_resena = %s AND cod_usuario = %s",
+            (cod_resena, cod_usuario)
+        )
+        if cursor.fetchone() is None:
+            return jsonify({"error": "La reseña no pertenece al usuario"}), 403
+        
+        # Si check es 0, desarchivar la reseña
+        if check == 0:
+            cursor.execute(
+                "UPDATE tresenia SET archivada = 'N', fec_modificacion = NOW() WHERE cod_resena = %s AND cod_usuario = %s",
+                (cod_resena, cod_usuario)
+            )
+        elif check == 1:
+            # Archivar la resenia si le pertenece al usuario
+            cursor.execute(
+                "UPDATE tresenia SET archivada = 'S', fec_modificacion = NOW() WHERE cod_resena = %s AND cod_usuario = %s",
+                (cod_resena, cod_usuario)
+            )
+        else:
+            return jsonify({"error": "Valor de check inválido"}), 400
+        conn.commit()
+        return jsonify({"message": "Reseña archivada correctamente"}), 200
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        conn.close()
+
+@resenas_bp.route("/api/resenas/usuario/<int:cod_usuario>", methods=["GET"])
+def listar_resenas_usuario(cod_usuario):
+    """Todas las reseñas de un usuario, con sus etiquetas."""
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    try:
+        cursor.execute(
+            """
+            SELECT cod_resena, titulo_pelicula, calificacion, comentario,
+                   destacada, archivada, fec_creacion, fec_modificacion
+            FROM tresenia
+            WHERE cod_usuario = %s
+            ORDER BY fec_creacion DESC
+            """,
+            (cod_usuario,)
+        )
+        resenas = cursor.fetchall()
+
+        for r in resenas:
+            cursor.execute(
+                """
+                SELECT te.nombre
+                FROM tresenia_etiqueta rt
+                INNER JOIN tetiqueta te ON te.cod_etiqueta = rt.cod_etiqueta
+                WHERE rt.cod_resenia = %s
+                """,
+                (r["cod_resena"],)
+            )
+            r["etiquetas"] = [row["nombre"] for row in cursor.fetchall()]
+
+        return jsonify(resenas), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        conn.close()

@@ -1,64 +1,153 @@
-.login-container {
-    width: 100%;
+.login-page {
     min-height: 100vh;
+
     display: flex;
-    justify-content: center;
+
     align-items: center;
-    background: #121212;
+    justify-content: center;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #292929,
+            #0b0b0b 60%
+        );
+
+    color: white;
 }
+
 
 .login-card {
-    width: 400px;
-    padding: 40px;
-    background: #1e1e1e;
-    border-radius: 12px;
-    box-sizing: border-box;
-    text-align: center;
+    width: 100%;
+    max-width: 420px;
+
+    padding: 45px;
+
+    background: #151515;
+
+    border: 1px solid #292929;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0, 0, 0, 0.5);
 }
+
+
+.login-logo {
+    text-align: center;
+
+    font-size: 45px;
+
+    margin-bottom: 10px;
+}
+
 
 .login-card h1 {
-    color: rgb(252, 249, 249);
-    margin: 0 0 10px 0;
+    text-align: center;
+
+    margin: 0;
+
+    font-size: 30px;
 }
 
-.login-card h2 {
-    color: rgb(248, 246, 246);
-    margin: 0 0 30px 0;
+
+.login-subtitle {
+    text-align: center;
+
+    color: #888;
+
+    margin-bottom: 30px;
 }
 
-.login-card form {
+
+.login-form {
     display: flex;
+
     flex-direction: column;
+
     gap: 20px;
 }
 
+
 .form-group {
     display: flex;
+
     flex-direction: column;
+
     gap: 8px;
-    text-align: left;
 }
+
 
 .form-group label {
-    color: white;
+    font-size: 14px;
+
+    color: #ccc;
 }
+
 
 .form-group input {
-    width: 100%;
-    padding: 12px;
-    box-sizing: border-box;
-    border-radius: 6px;
-    border: 1px solid #555;
-    background: #2a2a2a;
+    padding: 13px;
+
+    border-radius: 8px;
+
+    border: 1px solid #333;
+
+    background: #0c0c0c;
+
     color: white;
+
+    font-size: 14px;
+
+    outline: none;
 }
 
-.login-card button {
-    padding: 12px;
+
+.form-group input:focus {
+    border-color: #777;
+}
+
+
+.login-form button {
+    padding: 13px;
+
     border: none;
-    border-radius: 6px;
-    background: #1c1919;
-    color: white;
-    font-size: 16px;
+
+    border-radius: 8px;
+
+    background: white;
+
+    color: #111;
+
+    font-weight: bold;
+
     cursor: pointer;
+}
+
+
+.login-form button:hover {
+    background: #ddd;
+}
+
+
+.login-form button:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+}
+
+
+.login-error {
+    padding: 12px;
+
+    background: #351b1b;
+
+    border: 1px solid #693535;
+
+    border-radius: 8px;
+
+    color: #ffb5b5;
+
+    font-size: 13px;
 }

@@ -12,3 +12,6 @@ build/
 
 .vscode/
 Thumbs.db
+
+.env
+.env.local

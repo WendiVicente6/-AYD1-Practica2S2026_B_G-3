@@ -1,65 +1,173 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { login } from "../services/authService";
+
 import "./Login.css";
 
 
 function Login() {
-  const navigate = useNavigate();
 
-  const [usuario, setUsuario] = useState("");
-  const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
-  const iniciarSesion = (e) => {
-    e.preventDefault();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-    // Por ahora simulamos el inicio de sesión
-    if (usuario === "admin" && password === "1234") {
-      navigate("/admin");
-    } else if (usuario === "usuario" && password === "1234") {
-      navigate("/usuario");
-    } else {
-      alert("Usuario o contraseña incorrectos");
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+
+
+    async function handleSubmit(event) {
+
+        event.preventDefault();
+
+        setError("");
+
+        if (!email || !password) {
+
+            setError(
+                "Ingresa tu correo y contraseña."
+            );
+
+            return;
+        }
+
+        try {
+
+            setLoading(true);
+
+            const data = await login(
+                email,
+                password
+            );
+
+
+            if (data.user.role === "admin") {
+
+                navigate("/admin");
+
+            } else {
+
+                navigate("/");
+
+            }
+
+        } catch (error) {
+
+            setError(error.message);
+
+        } finally {
+
+            setLoading(false);
+        }
     }
-  };
 
-  return (
-    <div className="login-container">
-      <div className="login-card">
 
-        <h1>CineCraft</h1>
-        <h2>Iniciar sesión</h2>
+    return (
 
-        <form onSubmit={iniciarSesion}>
+        <div className="login-page">
 
-          <div>
-            <label>Usuario</label>
-            <input
-              type="text"
-              value={usuario}
-              onChange={(e) => setUsuario(e.target.value)}
-              placeholder="Ingrese su usuario"
-            />
-          </div>
+            <div className="login-container">
 
-          <div>
-            <label>Contraseña</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Ingrese su contraseña"
-            />
-          </div>
+                <div className="login-logo">
+                    🎬
+                </div>
 
-          <button type="submit">
-            Iniciar sesión
-          </button>
+                <h1>
+                    CineCraft
+                </h1>
 
-        </form>
+                <p className="login-subtitle">
+                    Tu espacio cinematográfico
+                </p>
 
-      </div>
-    </div>
-  );
+
+                <form
+                    className="login-form"
+                    onSubmit={handleSubmit}
+                >
+
+                    <div className="form-group">
+
+                        <label>
+                            Correo electrónico
+                        </label>
+
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(event) =>
+                                setEmail(event.target.value)
+                            }
+                            placeholder="correo@ejemplo.com"
+                            autoComplete="email"
+                        />
+
+                    </div>
+
+
+                    <div className="form-group">
+
+                        <label>
+                            Contraseña
+                        </label>
+
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(event) =>
+                                setPassword(event.target.value)
+                            }
+                            placeholder="Ingresa tu contraseña"
+                            autoComplete="current-password"
+                        />
+
+                    </div>
+
+
+                    {error && (
+
+                        <div className="login-error">
+                            {error}
+                        </div>
+
+                    )}
+
+
+                    <button
+                        type="submit"
+                        disabled={loading}
+                    >
+
+                        {loading
+                            ? "Iniciando sesión..."
+                            : "Iniciar sesión"
+                        }
+
+                    </button>
+
+                </form>
+
+
+                <p className="login-register">
+
+                    ¿No tienes una cuenta?
+
+                    <button
+                        type="button"
+                        onClick={() =>
+                            navigate("/registro")
+                        }
+                    >
+                        Solicitar registro
+                    </button>
+
+                </p>
+
+            </div>
+
+        </div>
+    );
 }
 
 export default Login;

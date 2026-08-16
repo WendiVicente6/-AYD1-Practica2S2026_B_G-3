@@ -135,6 +135,14 @@ function App() {
                     }
                 />
 
+                <Route 
+                    path="/registro"
+                    element={
+                        <Navigate to="/registro" 
+                        replace/>
+                    }
+                />
+
             </Routes>
 
         </BrowserRouter>

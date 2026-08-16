@@ -13,9 +13,9 @@ function Dashboard() {
                     </h1>
                 </div>
                 <div className="user-info">
-                    <div className="notification">
-                        NOTI
-                    </div>
+                    <Link to="/notificaciones" className="notification">
+                        <div>NOTIF</div>
+                    </Link>
                     <div className="avatar">
                         USU
                     </div>
@@ -25,9 +25,9 @@ function Dashboard() {
                 <div className="welcome-card">
                     <div>
                         <span className="card-icon">
-                            <img src="/viendo-una-pelicula.png" 
-                                 alt="pelicula"   
-                                 style={{ width: '100px', height: '100px' }}  
+                            <img src="/viendo-una-pelicula.png"
+                                alt="pelicula"
+                                style={{ width: '100px', height: '100px' }}
                             />
                         </span>
                         <h2>
@@ -49,9 +49,9 @@ function Dashboard() {
                     <Link to="/mis-resenas" className="quick-card">
                         <div className="quick-card">
                             <img src="/resenas.png"
-                                     alt="Reseña"
-                                     style={{ width: '50px', height: '50px' }}
-                                />
+                                alt="Reseña"
+                                style={{ width: '50px', height: '50px' }}
+                            />
                             <h3>Mis reseñas</h3>
                             <p>
                                 Consulta y administra tus reseñas.
@@ -61,10 +61,10 @@ function Dashboard() {
 
                     <Link to="/destacadas" className="quick-card">
                         <div className="quick-card">
-                            <img src="/mensaje-destacado.png" 
-                                    alt="destacado"   
-                                    style={{ width: '50px', height: '50px' }}  
-                                />
+                            <img src="/mensaje-destacado.png"
+                                alt="destacado"
+                                style={{ width: '50px', height: '50px' }}
+                            />
                             <h3>Destacadas</h3>
                             <p>
                                 Encuentra tus reseñas favoritas.
@@ -72,11 +72,11 @@ function Dashboard() {
                         </div>
                     </Link>
 
-                    <Link to="/archivadas" className="quick-card-link">
+                    <Link to="/archivadas" className="quick-card">
                         <div className="quick-card">
-                            <img src="/archivado.png" 
-                                 alt="archivado"   
-                                 style={{ width: '50px', height: '50px' }}  
+                            <img src="/archivado.png"
+                                alt="archivado"
+                                style={{ width: '50px', height: '50px' }}
                             />
                             <h3>Archivadas</h3>
                             <p>
@@ -85,18 +85,23 @@ function Dashboard() {
                         </div>
                     </Link>
 
-          <div className="quick-card">
-            <img
-              src="/compartir.png"
-              alt="compartir"
-              style={{ width: "50px", height: "50px" }}
-            />
-            <h3>Compartidas</h3>
-            <p>Revisa las reseñas compartidas.</p>
-          </div>
+                    <Link to="/compartidas" className="quick-card">
+                        <div className="quick-card">
+                            <img
+                                src="/compartir.png"
+                                alt="compartir"
+                                style={{ width: "50px", height: "50px" }}
+                            />
+                            <h3>Compartidas</h3>
+                            <p>Revisa las reseñas compartidas.</p>
+                        </div>
+                    </Link>
+
+
+
+                </div>
+            </section>
         </div>
-      </section>
-    </div>
-  );
+    );
 }
 export default Dashboard;

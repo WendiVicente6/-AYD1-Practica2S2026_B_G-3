@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { setCurrentUserId } from "../utils/auth.js";
 import { login } from "../services/authService";
 
 import "./Login.css";
@@ -45,11 +45,10 @@ function Login() {
             if (data.user.role === "admin") {
 
                 navigate("/admin");
-
+                setCurrentUserId(data.user.id);
             } else {
-
+                setCurrentUserId(data.user.id);
                 navigate("/");
-
             }
 
         } catch (error) {

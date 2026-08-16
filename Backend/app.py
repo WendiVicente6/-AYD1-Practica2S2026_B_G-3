@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from routes.routes import resenas_bp
 from routes.autenticacion import auth_bp
+from routes.perfi import user_bp
 import os
 
 app = Flask(__name__)
@@ -20,13 +21,13 @@ app.config.update(
 CORS(
     app,
     supports_credentials=True,
-    origins=["http://localhost:5173"],
+    origins=["http://localhost:5173", "http://127.0.0.1:5173"],
     expose_headers=["Set-Cookie"]   # Obliga al navegador a aceptar la cookie del servidor
 )
 
 app.register_blueprint(resenas_bp)
 app.register_blueprint(auth_bp)
-
+app.register_blueprint(user_bp)
 
 @app.route("/", methods=["GET"])
 def home():

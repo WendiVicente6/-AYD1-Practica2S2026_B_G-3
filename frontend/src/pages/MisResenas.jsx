@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { obtenerMisResenas, eliminarResena } from "../api/resenas";
+import { ArchivarResena } from "../api/archivar";
+import { destacarResenia } from "../api/destacar";
 import { getCurrentUserId } from "../utils/auth";
 import ModalResena from "../Componentes/ModalResena";
 import ModalConfirmarEliminar from "../Componentes/ModalConfirmarEliminar";
@@ -54,6 +56,44 @@ function MisResenas() {
         setResenaAEliminar(null);
     };
 
+    const handleToggleArchivada = async (resena) => {
+        const nuevoValor = resena.archivada === "S" ? "N" : "S";
+        setResenas((prev) =>
+            prev.map((r) =>
+                r.cod_resena === resena.cod_resena ? { ...r, archivada: nuevoValor } : r
+            )
+        );
+        try {
+            await ArchivarResena(resena.cod_resena, nuevoValor === "S" ? 1 : 0);
+        } catch (err) {
+            setResenas((prev) =>
+                prev.map((r) =>
+                    r.cod_resena === resena.cod_resena ? { ...r, archivada: resena.archivada } : r
+                )
+            );
+            setError(err.message);
+        }
+    };
+
+    const handleToggleDestacada = async (resena) => {
+        const nuevoValor = resena.destacada === "S" ? "N" : "S";
+        setResenas((prev) =>
+            prev.map((r) =>
+                r.cod_resena === resena.cod_resena ? { ...r, destacada: nuevoValor } : r
+            )
+        );
+        try {
+            await destacarResenia(resena.cod_resena, nuevoValor === "S" ? 1 : 0);
+        } catch (err) {
+            setResenas((prev) =>
+                prev.map((r) =>
+                    r.cod_resena === resena.cod_resena ? { ...r, destacada: resena.destacada } : r
+                )
+            );
+            setError(err.message);
+        }
+    };
+
     return (
         <div className="dashboard">
             <div className="dashboard-header">
@@ -97,6 +137,18 @@ function MisResenas() {
                                 onClick={() => handleEditar(r)}
                             >
                                 Editar
+                            </button>
+                            <button
+                                className={`btn-secundario${r.destacada === "S" ? " activo-destacar" : ""}`}
+                                onClick={() => handleToggleDestacada(r)}
+                            >
+                                {r.destacada === "S" ? "★ Destacada" : "☆ Destacar"}
+                            </button>
+                            <button
+                                className={`btn-secundario${r.archivada === "S" ? " activo-archivar" : ""}`}
+                                onClick={() => handleToggleArchivada(r)}
+                            >
+                                {r.archivada === "S" ? "Desarchivar" : "Archivar"}
                             </button>
                             <button
                                 className="btn-eliminar-resena"

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { login } from "../services/authService";
+
 
 import "./Login.css";
 
@@ -24,11 +24,7 @@ function Login() {
         setError("");
 
         if (!email || !password) {
-
-            setError(
-                "Ingresa tu correo y contraseña."
-            );
-
+            setError("Ingresa tu correo y contraseña.");
             return;
         }
 
@@ -41,18 +37,22 @@ function Login() {
                 password
             );
 
+            console.log("RESPUESTA LOGIN:", data);
+            console.log("ROL:", data?.user?.role);
 
-            if (data.user.role === "admin") {
+            if (data?.user?.role === "admin") {
 
-                navigate("/admin");
+                navigate("/adminuser");
 
             } else {
 
-                navigate("/");
+                navigate("/usuario");
 
             }
 
         } catch (error) {
+
+            console.error("ERROR LOGIN:", error);
 
             setError(error.message);
 

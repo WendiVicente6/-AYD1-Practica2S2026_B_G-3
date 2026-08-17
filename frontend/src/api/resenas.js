@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000";
+const API_URL = "http://localhost:9000";
 
 export async function crearResena(datos) {
     const res = await fetch(`${API_URL}/api/resenas`, {

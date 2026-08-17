@@ -3,8 +3,11 @@ __pycache__/
 .env
 env/
 venv/
+Backend/env/
+Backend/venv/
 
 node_modules/
+frontend/node_modules/
 dist/
 build/
 .env.local

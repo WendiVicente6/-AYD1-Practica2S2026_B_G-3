@@ -1,0 +1,175 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+    background: #0b0b0b;
+    color: #ffffff;
+}
+
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+.dashboard {
+    flex: 1;
+    min-width: 0;
+    background: #0b0b0b;
+    padding: 35px 45px;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.welcome-text {
+    color: #888888;
+    font-size: 14px;
+    margin: 0 0 5px;
+}
+
+.dashboard-header h1 {
+    margin: 0;
+    font-size: 30px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.notification {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #181818;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #292929;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.welcome-card {
+    background:
+        linear-gradient(
+            135deg,
+            #202020,
+            #141414
+        );
+    border: 1px solid #292929;
+    border-radius: 15px;
+    padding: 35px;
+    margin-bottom: 40px;
+}
+
+.card-icon {
+    font-size: 35px;
+}
+
+.welcome-card h2 {
+    font-size: 25px;
+    margin: 15px 0 10px;
+}
+
+.welcome-card p {
+    color: #999999;
+    max-width: 650px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.section-header {
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    font-size: 20px;
+}
+
+
+.quick-actions {
+    display: grid;
+    grid-template-columns:
+        repeat(4, 1fr);
+    gap: 20px;
+}
+
+.quick-card {
+    background: #151515;
+    border: 1px solid #272727;
+    border-radius: 12px;
+    padding: 25px;
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.quick-card:hover {
+    background: #1d1d1d;
+    transform: translateY(-3px);
+}
+
+.quick-card > span {
+    font-size: 28px;
+}
+
+.quick-card h3 {
+    margin: 15px 0 8px;
+    font-size: 16px;
+}
+
+.quick-card p {
+    color: #888888;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/*RESPONSIVE*/
+@media (max-width: 1000px) {
+    .quick-actions {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    .barra {
+        width: 70px;
+        padding: 15px 8px;
+    }
+    .logo span:last-child,
+    .menu-title,
+    .nav-item:not(.active) {
+        font-size: 0;
+    }
+    .nav-item {
+        justify-content: center;
+    }
+    .dashboard {
+        padding: 25px;
+    }
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+}

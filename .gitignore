@@ -1,9 +1,12 @@
 __pycache__/
 *.pyc
 .env
+env/
+venv/
 Backend/env/
 Backend/venv/
 
+node_modules/
 frontend/node_modules/
 dist/
 build/
@@ -12,6 +15,3 @@ build/
 
 .vscode/
 Thumbs.db
-
-.env
-.env.local

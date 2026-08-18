@@ -54,6 +54,7 @@ function ProtectedRoute({
     }
 
 
+        
     if (
         requiredRole !== undefined &&
         user.user.role_id !== requiredRole
@@ -70,6 +71,5 @@ function ProtectedRoute({
 
     return children;
 }
-
 
 export default ProtectedRoute;

@@ -7,6 +7,7 @@ import {
 
 import Login from "./pages/Login";
 import Barra from "./Componentes/Barra";
+import BarraAdmin from "./Componentes/BarraAdmin";
 import ProtectedRoute from "./Componentes/Protectedroute";
 
 import Dashboard from "./pages/Dashboard";
@@ -15,9 +16,14 @@ import Notificaciones from "./pages/Notificaciones";
 import Featured from "./pages/Featured";
 import Archived from "./pages/Archived";
 import MisResenas from "./pages/MisResenas";
+import Solicitudes from "./pages/Solicitudes";
+import AdminUser from "./pages/AdminUser";
+import AdminHistorial from "./pages/AdminHistorial";
+import AdminReportes from "./pages/AdminReportes";
+import Registro from "./pages/Registro";
+
 import MyProfile from "./pages/MyProfile";
 
-// Página temporal
 function Placeholder({ title }) {
     return (
         <div
@@ -36,8 +42,22 @@ function Placeholder({ title }) {
 }
 
 
-function App() {
+function UsuarioLayout({ children }) {
+    return (
+        <div className="app">
 
+            <Barra />
+
+            <main style={{ flex: 1 }}>
+                {children}
+            </main>
+
+        </div>
+    );
+}
+
+
+function App() {
     return (
         <BrowserRouter>
 
@@ -47,9 +67,12 @@ function App() {
                     element={<Login />}
                 />
                 <Route
-                    path="/*"
+                    path="/usuario/*"
                     element={
                         <ProtectedRoute requiredRole={1}>
+                            <UsuarioLayout>
+                                <Dashboard />
+                            </UsuarioLayout>
                             <div className="app">
 
                                 <Barra />
@@ -114,17 +137,17 @@ function App() {
                     }
                 />
 
-                <Route 
+                <Route
                     path="/registro"
                     element={
-                        <Navigate to="/registro" 
-                        replace/>
+                        <Navigate to="/registro"
+                            replace />
                     }
                 />
 
             </Routes>
 
-        </BrowserRouter>
+        </BrowserRouter >
     );
 }
 

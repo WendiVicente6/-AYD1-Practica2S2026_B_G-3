@@ -1,4 +1,5 @@
-import {API_URL} from "../api/compartir.js";
+
+import { API_URL } from "../api/compartir.js";
 
 export async function login(email, password) {
 

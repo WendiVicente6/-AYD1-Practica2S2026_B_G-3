@@ -1,4 +1,5 @@
 from functools import wraps
+#from werkzeug.security import generate_password_hash
 
 from flask import (
     Blueprint,
@@ -296,6 +297,167 @@ def current_user():
         }
 
     }), 200
+
+
+# =========================================================
+# REGISTRO DE USUARIO
+# =========================================================
+
+@auth_bp.route("/register", methods=["POST"])
+def register():
+
+    data = request.get_json() or {}
+
+    nombres = data.get("nombres", "").strip()
+    apellidos = data.get("apellidos", "").strip()
+    genero = data.get("genero", "").strip()
+    correo = data.get("correo", "").strip()
+    password = data.get("password", "")
+    confirmar_password = data.get("confirmar_password", "")
+
+    if not nombres:
+        return jsonify({
+            "message": "Los nombres son obligatorios."
+        }), 400
+
+    if not apellidos:
+        return jsonify({
+            "message": "Los apellidos son obligatorios."
+        }), 400
+
+    if not genero:
+        return jsonify({
+            "message": "El género es obligatorio."
+        }), 400
+
+    if not correo:
+        return jsonify({
+            "message": "El correo es obligatorio."
+        }), 400
+
+    if not password:
+        return jsonify({
+            "message": "La contraseña es obligatoria."
+        }), 400
+
+    if password != confirmar_password:
+        return jsonify({
+            "message": "Las contraseñas no coinciden."
+        }), 400
+
+    conn = None
+    cursor = None
+
+    try:
+
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT cod_usuario
+            FROM tusuario
+            WHERE correo = %s
+        """, (correo,))
+
+        usuario_existente = cursor.fetchone()
+
+        if usuario_existente:
+            return jsonify({
+                "message": "El correo ya está registrado."
+            }), 409
+
+        # Aquí debes usar el mismo método de hash
+        # que utiliza actualmente tu login/registro.
+        #password_hash = generate_password_hash(password)
+
+        cursor.execute("""
+            INSERT INTO tusuario
+            (
+                genero,
+                nombres,
+                apellidos,
+                cod_rol,
+                correo,
+                password,
+                sn_activo
+            )
+            VALUES
+            (
+                %s,
+                %s,
+                %s,
+                1,
+                %s,
+                %s,
+                0
+            )
+        """, (
+            genero,
+            nombres,
+            apellidos,
+            correo,
+            password
+        ))
+
+        cod_usuario = cursor.lastrowid
+
+        cursor.execute("""
+            INSERT INTO tsol_registro
+            (
+                cod_usuario,
+                cod_estado
+            )
+            VALUES
+            (
+                %s,
+                1
+            )
+        """, (cod_usuario,))
+
+        conn.commit()
+
+        return jsonify({
+            "message":
+                "Registro enviado correctamente. "
+                "Espera la aprobación del administrador."
+        }), 201
+
+    except Exception as e:
+
+        if conn:
+            conn.rollback()
+
+
+
+        print("ERROR REGISTRO:", e)
+
+        return jsonify({
+            "success": False,
+            "message": str(e)
+            
+        }), 500
+
+    finally:
+
+        if cursor:
+            cursor.close()
+
+        if conn:
+            conn.close()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # =========================================================

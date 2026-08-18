@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:9000";
+
 import {API_URL} from "./compartir.js";
 
 export async function crearResena(datos) {

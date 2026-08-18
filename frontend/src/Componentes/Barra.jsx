@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./barra.css";
-import { useState } from "react";
 import { logout } from "../services/authservice"
 import { useNavigate } from "react-router-dom";
 import { setCurrentUserId } from "../utils/auth.js";

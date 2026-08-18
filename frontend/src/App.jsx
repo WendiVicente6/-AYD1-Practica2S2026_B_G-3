@@ -15,7 +15,7 @@ import Notificaciones from "./pages/Notificaciones";
 import Featured from "./pages/Featured";
 import Archived from "./pages/Archived";
 import MisResenas from "./pages/MisResenas";
-
+import MyProfile from "./pages/MyProfile";
 
 // Página temporal
 function Placeholder({ title }) {
@@ -102,9 +102,7 @@ function App() {
                                         <Route
                                             path="/perfil"
                                             element={
-                                                <Placeholder
-                                                    title="Mi perfil"
-                                                />
+                                                <MyProfile />
                                             }
                                         />
 

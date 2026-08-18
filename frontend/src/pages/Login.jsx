@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { setCurrentUserId } from "../utils/auth.js";
-import { login } from "../services/authService";
+import { login } from "../services/authservice.jsx";
+
 
 import "./Login.css";
 
@@ -24,11 +25,7 @@ function Login() {
         setError("");
 
         if (!email || !password) {
-
-            setError(
-                "Ingresa tu correo y contraseña."
-            );
-
+            setError("Ingresa tu correo y contraseña.");
             return;
         }
 
@@ -41,17 +38,27 @@ function Login() {
                 password
             );
 
+            console.log("RESPUESTA LOGIN:", data);
+            console.log("ROL:", data?.user?.role);
 
-            if (data.user.role === "admin") {
+            if (data?.user?.role === "admin") {
+
+                navigate("/adminuser");
+
+            } else {
+
+                navigate("/usuario");
 
                 navigate("/admin");
                 setCurrentUserId(data.user.id);
-            } else {
+                //} else {
                 setCurrentUserId(data.user.id);
                 navigate("/");
             }
 
         } catch (error) {
+
+            console.error("ERROR LOGIN:", error);
 
             setError(error.message);
 
@@ -158,7 +165,7 @@ function Login() {
                             navigate("/registro")
                         }
                     >
-                        Solicitar registro
+                        Crear cuenta
                     </button>
 
                 </p>

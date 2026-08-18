@@ -4,6 +4,7 @@ import { ArchivarResena } from "../api/archivar";
 import { destacarResenia } from "../api/destacar";
 import { getCurrentUserId } from "../utils/auth";
 import ModalResena from "../Componentes/ModalResena";
+import ModalCompartir from "../Componentes/ModalCompartir";
 import ModalConfirmarEliminar from "../Componentes/ModalConfirmarEliminar";
 import "./MisResenas.css";
 
@@ -14,6 +15,7 @@ function MisResenas() {
     const [modalAbierto, setModalAbierto] = useState(false);
     const [resenaEditar, setResenaEditar] = useState(null);
     const [resenaAEliminar, setResenaAEliminar] = useState(null);
+    const [resenaACompartir, setResenaACompartir] = useState(null);
 
     const codUsuario = getCurrentUserId();
 
@@ -139,6 +141,12 @@ function MisResenas() {
                                 Editar
                             </button>
                             <button
+                                className="btn-secundario"
+                                onClick={() => setResenaACompartir(r)}
+                            >
+                                Compartir
+                            </button>
+                            <button
                                 className={`btn-secundario${r.destacada === "S" ? " activo-destacar" : ""}`}
                                 onClick={() => handleToggleDestacada(r)}
                             >
@@ -174,6 +182,12 @@ function MisResenas() {
                     titulo={resenaAEliminar.titulo_pelicula}
                     onClose={() => setResenaAEliminar(null)}
                     onConfirmar={handleEliminar}
+                />
+            )}
+            {resenaACompartir && (
+                <ModalCompartir
+                    codResena={resenaACompartir.cod_resena}
+                    onClose={() => setResenaACompartir(null)}
                 />
             )}
         </div>

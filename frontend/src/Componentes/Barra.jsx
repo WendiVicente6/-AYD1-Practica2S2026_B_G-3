@@ -1,11 +1,13 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./barra.css";
-import { useState } from "react";
 import { logout } from "../services/authservice"
 import { useNavigate } from "react-router-dom";
 import { setCurrentUserId } from "../utils/auth.js";
 
 function Barra() {
+
+    const [tipoUsuario, setTipoUsuario] = useState(true); // Cambia a false para simular un usuario normal
     const navigate = useNavigate();
     const [logOutError, setLogoutError] = useState("");
     const [mensajeLogout, setMensajeLogout] = useState("");
@@ -27,6 +29,10 @@ function Barra() {
 
     return (
         <aside className="barra">
+
+            {tipoUsuario && (
+                <p className="user-type">Usuario</p>
+            )}
 
             <div className="logo">
                 <span>CineCraft</span>

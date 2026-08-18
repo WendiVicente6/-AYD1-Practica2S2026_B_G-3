@@ -1,10 +1,8 @@
 import {API_URL} from "./compartir.js";
 import {getCurrentUserId} from "../utils/auth.js";
 
-
-let cod_usuario = getCurrentUserId();
-
 export async function obtenerResenias(){
+    const cod_usuario = getCurrentUserId();
     let res = await fetch(`${API_URL}/resenas/obtener/usuario/${cod_usuario}`);
     let data = await res.json();
     if(!res.ok){
@@ -15,6 +13,7 @@ export async function obtenerResenias(){
 }
 
 export async function destacarResenia(codResena, check){
+    const cod_usuario = getCurrentUserId();
     let res = await fetch(`${API_URL}/resenas/destacar/${cod_usuario}/${codResena}/${check}`,
     {method: 'POST'}
     );

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { aprobarSolicitud, obtenerSolicitudes, rechazarSolicitud } from "../api/admin";
-import BarraAdmin from "../Componentes/BarraAdmin";
+
 
 function Solicitudes() {
     const [solicitudes, setSolicitudes] = useState([]);
@@ -12,10 +12,11 @@ function Solicitudes() {
     const [motivo, setMotivo] = useState("");
 
     async function cargarSolicitudes() {
-        <BarraAdmin />
+
 
         try {
-            setCargando(true); setError("");
+            setCargando(true);
+            setError("");
             setSolicitudes(await obtenerSolicitudes());
         } catch (err) { setError(err.message); }
         finally { setCargando(false); }

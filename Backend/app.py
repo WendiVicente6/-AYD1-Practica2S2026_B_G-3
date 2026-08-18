@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from routes.routes import resenas_bp
 from routes.autenticacion import auth_bp
+#from routes.perfi import user_bp
 from routes.admin import admin_bp
 import os
 
@@ -15,14 +16,17 @@ app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE="Lax",  # 'Lax' es el estándar moderno seguro para localhost entre puertos
     SESSION_COOKIE_SECURE=False,   # Falso porque no estás usando HTTPS en tu computadora
-)
 
+)
 # 3. Configuración avanzada de CORS para admitir credenciales y cabeceras de sesión
 CORS(
     app,
     supports_credentials=True,
-    origins=["http://localhost:5173"],
-    expose_headers=["Set-Cookie"]   # Obliga al navegador a aceptar la cookie del servidor
+
+    origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    expose_headers=["Set-Cookie"],   # Obliga al navegador a aceptar la cookie del servidor
+    allow_headers=["Content-Type"],
+    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 )
 
 app.register_blueprint(resenas_bp)
@@ -51,6 +55,8 @@ def get_user():
 
 
 if __name__ == "__main__":
+
+
     app.run(
         debug=True,
         port=9000

@@ -101,6 +101,13 @@ def aprobar_solicitud(cod_solicitud):
 
         # Aprobar solicitud
         cursor.execute("""
+    UPDATE tusuario u
+    INNER JOIN tsol_registro s
+        ON s.cod_usuario = u.cod_usuario
+    SET u.sn_activo = 1
+    WHERE s.cod_solicitud = %s
+""", (cod_solicitud,))
+        cursor.execute("""
             UPDATE tsol_registro
             SET
                 cod_estado = 2,
@@ -271,3 +278,109 @@ def historial_solicitudes():
     finally:
         cursor.close()
         conn.close()
+
+
+# ==================================================
+# REPORTE DEL TOP 5 DE USUARIOS CON MÁS RESEÑAS 
+# ==================================================
+
+
+@admin_bp.route("/api/admin/reportes/top-resenas", methods=["GET"])
+def top_resenas():
+    conn = None
+    cursor = None
+
+    try:
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT
+                u.cod_usuario,
+                CONCAT(u.nombres, ' ', u.apellidos) AS usuario,
+                u.correo,
+                COUNT(r.cod_resena) AS total_resenas
+            FROM tusuario u
+            INNER JOIN tresenia r
+                ON r.cod_usuario = u.cod_usuario
+            WHERE u.cod_rol = 1
+            GROUP BY
+                u.cod_usuario,
+                u.nombres,
+                u.apellidos,
+                u.correo
+            ORDER BY total_resenas DESC
+            LIMIT 5
+        """)
+
+        resultado = cursor.fetchall()
+
+        return jsonify(resultado), 200
+
+    except Exception as e:
+        print("ERROR TOP RESEÑAS:", e)
+
+        return jsonify({
+            "message": str(e)
+        }), 500
+
+    finally:
+        if cursor:
+            cursor.close()
+
+        if conn:
+            conn.close()
+
+
+# ==================================================
+# REPORTE DEL TOP 5 DE USUARIOS CON MÁS RESEÑAS COMPARTIDAS
+# ==================================================
+
+
+@admin_bp.route("/api/admin/reportes/top-compartidas", methods=["GET"])
+def top_compartidas():
+    conn = None
+    cursor = None
+
+    try:
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT
+                u.cod_usuario,
+                CONCAT(u.nombres, ' ', u.apellidos) AS usuario,
+                u.correo,
+                COUNT(c.cod_compartida) AS total_compartidas
+            FROM tusuario u
+            INNER JOIN tresenia r
+                ON r.cod_usuario = u.cod_usuario
+            INNER JOIN tcompartida c
+                ON c.cod_resenia = r.cod_resena
+            WHERE u.cod_rol = 1
+            GROUP BY
+                u.cod_usuario,
+                u.nombres,
+                u.apellidos,
+                u.correo
+            ORDER BY total_compartidas DESC
+            LIMIT 5
+        """)
+
+        resultado = cursor.fetchall()
+
+        return jsonify(resultado), 200
+
+    except Exception as e:
+        print("ERROR TOP COMPARTIDAS:", e)
+
+        return jsonify({
+            "message": str(e)
+        }), 500
+
+    finally:
+        if cursor:
+            cursor.close()
+
+        if conn:
+            conn.close()

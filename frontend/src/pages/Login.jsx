@@ -159,7 +159,7 @@ function Login() {
                             navigate("/registro")
                         }
                     >
-                        Solicitar registro
+                        Crear cuenta
                     </button>
 
                 </p>

@@ -20,6 +20,7 @@ import Solicitudes from "./pages/Solicitudes";
 import AdminUser from "./pages/AdminUser";
 import AdminHistorial from "./pages/AdminHistorial";
 import AdminReportes from "./pages/AdminReportes";
+import Registro from "./pages/Registro";
 
 
 function Placeholder({ title }) {
@@ -266,6 +267,19 @@ function App() {
 
 
                 {/* =====================================
+                    REGISTRO DE USUARIO
+                ====================================== */}
+
+                <Route
+                    path="/registro"
+                    element={
+                        <Registro />
+                    }
+                />
+
+
+
+                {/* =====================================
                     CUALQUIER RUTA DESCONOCIDA
                 ====================================== */}
 
@@ -281,7 +295,7 @@ function App() {
 
             </Routes>
 
-        </BrowserRouter>
+        </BrowserRouter >
     );
 }
 

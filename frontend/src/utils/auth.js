@@ -2,7 +2,7 @@
 // era para probar todo y ver que funcionara la cosa de compartir reseña el que haga lo del login que reemplace esta función
 // para que lea el cod_usuario real de la sesión osea el token y eso va
 
-const DEV_USER_ID_KEY = "cinecraft_cod_usuario";
+const DEV_USER_ID_KEY = "cod_usuario";
 
 export function getCurrentUserId() {
     const stored = localStorage.getItem(DEV_USER_ID_KEY);

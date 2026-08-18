@@ -5,7 +5,7 @@ import {getCurrentUserId} from "../utils/auth.js";
 let cod_usuario = getCurrentUserId();
 
 export async function obtenerResenias(){
-    let res = await fetch(`${API_URL}/api/resenas/obtener/usuario/${cod_usuario}`);
+    let res = await fetch(`${API_URL}/resenas/obtener/usuario/${cod_usuario}`);
     let data = await res.json();
     if(!res.ok){
         throw new Error(data.error || "No se pudieron cargar las reseñas");
@@ -15,7 +15,7 @@ export async function obtenerResenias(){
 }
 
 export async function destacarResenia(codResena, check){
-    let res = await fetch(`${API_URL}/api/resenas/destacar/${cod_usuario}/${codResena}/${check}`,
+    let res = await fetch(`${API_URL}/resenas/destacar/${cod_usuario}/${codResena}/${check}`,
     {method: 'POST'}
     );
     let data = await res.json();

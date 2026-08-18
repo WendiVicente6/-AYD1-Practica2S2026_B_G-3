@@ -22,6 +22,7 @@ import AdminHistorial from "./pages/AdminHistorial";
 import AdminReportes from "./pages/AdminReportes";
 import Registro from "./pages/Registro";
 
+import MyProfile from "./pages/MyProfile";
 
 function Placeholder({ title }) {
     return (
@@ -83,6 +84,56 @@ function App() {
                             <UsuarioLayout>
                                 <Dashboard />
                             </UsuarioLayout>
+                            <div className="app">
+
+                                <Barra />
+
+                                <main style={{ flex: 1 }}>
+
+                                    <Routes>
+
+                                        <Route
+                                            path="/"
+                                            element={<Dashboard />}
+                                        />
+
+                                        <Route
+                                            path="/mis-resenas"
+                                            element={<MisResenas />}
+                                        />
+
+                                        <Route
+                                            path="/destacadas"
+                                            element={<Featured />}
+                                        />
+
+                                        <Route
+                                            path="/archivadas"
+                                            element={<Archived />}
+                                        />
+
+                                        <Route
+                                            path="/compartidas"
+                                            element={<Compartidas />}
+                                        />
+
+                                        <Route
+                                            path="/notificaciones"
+                                            element={<Notificaciones />}
+                                        />
+
+                                        <Route
+                                            path="/perfil"
+                                            element={
+                                                <MyProfile />
+                                            }
+                                        />
+
+                                    </Routes>
+
+                                </main>
+
+                            </div>
                         </ProtectedRoute>
                     }
                 />
@@ -290,6 +341,14 @@ function App() {
                             to="/login"
                             replace
                         />
+                    }
+                />
+
+                <Route
+                    path="/registro"
+                    element={
+                        <Navigate to="/registro"
+                            replace />
                     }
                 />
 

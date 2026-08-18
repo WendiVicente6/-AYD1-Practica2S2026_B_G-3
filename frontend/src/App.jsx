@@ -261,8 +261,7 @@ function App() {
 
                 {/* =====================================
                     ADMINISTRADOR - MODO DEMO
-                    No requiere Backend ni MySQL.
-                ====================================== */}
+                ===================================== */}
                 <Route
                     path="/adminuser/*"
                     element={
@@ -279,7 +278,7 @@ function App() {
                     USUARIO NORMAL
                 ====================================== */}
                 <Route
-                    path="/*"
+                    path="/usuario/*"
                     element={
                         <ProtectedRoute requiredRole={0}>
                             <AdminUser />

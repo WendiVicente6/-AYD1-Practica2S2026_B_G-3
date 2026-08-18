@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { obtenerMisResenas, eliminarResena } from "../api/resenas";
+import { ArchivarResena } from "../api/archivar";
+import { destacarResenia } from "../api/destacar";
 import { getCurrentUserId } from "../utils/auth";
 import ModalResena from "../Componentes/ModalResena";
+import ModalCompartir from "../Componentes/ModalCompartir";
 import ModalConfirmarEliminar from "../Componentes/ModalConfirmarEliminar";
 import "./MisResenas.css";
 
@@ -12,6 +15,7 @@ function MisResenas() {
     const [modalAbierto, setModalAbierto] = useState(false);
     const [resenaEditar, setResenaEditar] = useState(null);
     const [resenaAEliminar, setResenaAEliminar] = useState(null);
+    const [resenaACompartir, setResenaACompartir] = useState(null);
 
     const codUsuario = getCurrentUserId();
 
@@ -52,6 +56,44 @@ function MisResenas() {
             prev.filter((r) => r.cod_resena !== resenaAEliminar.cod_resena)
         );
         setResenaAEliminar(null);
+    };
+
+    const handleToggleArchivada = async (resena) => {
+        const nuevoValor = resena.archivada === "S" ? "N" : "S";
+        setResenas((prev) =>
+            prev.map((r) =>
+                r.cod_resena === resena.cod_resena ? { ...r, archivada: nuevoValor } : r
+            )
+        );
+        try {
+            await ArchivarResena(resena.cod_resena, nuevoValor === "S" ? 1 : 0);
+        } catch (err) {
+            setResenas((prev) =>
+                prev.map((r) =>
+                    r.cod_resena === resena.cod_resena ? { ...r, archivada: resena.archivada } : r
+                )
+            );
+            setError(err.message);
+        }
+    };
+
+    const handleToggleDestacada = async (resena) => {
+        const nuevoValor = resena.destacada === "S" ? "N" : "S";
+        setResenas((prev) =>
+            prev.map((r) =>
+                r.cod_resena === resena.cod_resena ? { ...r, destacada: nuevoValor } : r
+            )
+        );
+        try {
+            await destacarResenia(resena.cod_resena, nuevoValor === "S" ? 1 : 0);
+        } catch (err) {
+            setResenas((prev) =>
+                prev.map((r) =>
+                    r.cod_resena === resena.cod_resena ? { ...r, destacada: resena.destacada } : r
+                )
+            );
+            setError(err.message);
+        }
     };
 
     return (
@@ -99,6 +141,24 @@ function MisResenas() {
                                 Editar
                             </button>
                             <button
+                                className="btn-secundario"
+                                onClick={() => setResenaACompartir(r)}
+                            >
+                                Compartir
+                            </button>
+                            <button
+                                className={`btn-secundario${r.destacada === "S" ? " activo-destacar" : ""}`}
+                                onClick={() => handleToggleDestacada(r)}
+                            >
+                                {r.destacada === "S" ? "★ Destacada" : "☆ Destacar"}
+                            </button>
+                            <button
+                                className={`btn-secundario${r.archivada === "S" ? " activo-archivar" : ""}`}
+                                onClick={() => handleToggleArchivada(r)}
+                            >
+                                {r.archivada === "S" ? "Desarchivar" : "Archivar"}
+                            </button>
+                            <button
                                 className="btn-eliminar-resena"
                                 onClick={() => setResenaAEliminar(r)}
                             >
@@ -122,6 +182,12 @@ function MisResenas() {
                     titulo={resenaAEliminar.titulo_pelicula}
                     onClose={() => setResenaAEliminar(null)}
                     onConfirmar={handleEliminar}
+                />
+            )}
+            {resenaACompartir && (
+                <ModalCompartir
+                    codResena={resenaACompartir.cod_resena}
+                    onClose={() => setResenaACompartir(null)}
                 />
             )}
         </div>

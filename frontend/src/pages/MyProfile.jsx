@@ -160,7 +160,7 @@ export default function MyProfile() {
 
                     <div className="flex flex-col">
                         <label className="text-sm font-semibold text-gray-300 mb-2">
-                            Correo Electrónico
+                            Email
                         </label>
                         <input
                             type="email"
